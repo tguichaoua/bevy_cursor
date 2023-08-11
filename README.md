@@ -8,8 +8,8 @@
 [bevy tracking doc]: https://github.com/bevyengine/bevy/blob/main/docs/plugins_guidelines.md#main-branch-tracking
 [Doc Status]: https://docs.rs/bevy_cursor/badge.svg
 [docs]: https://docs.rs/bevy_cursor
-[Build Status]: https://github.com/tguichaoua/bevy-cursor/actions/workflows/ci.yml/badge.svg?branch=main
-[actions]: https://github.com/tguichaoua/bevy-cursor/actions/workflows/ci.yml
+[Build Status]: https://github.com/tguichaoua/bevy_cursor/actions/workflows/ci.yml/badge.svg?branch=main
+[actions]: https://github.com/tguichaoua/bevy_cursor/actions/workflows/ci.yml
 
 **Bevy Cursor is a [`bevy`](https://github.com/bevyengine/bevy) plugin to track informations about the cursor.**
 
