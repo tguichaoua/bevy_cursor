@@ -30,7 +30,6 @@ use bevy::prelude::*;
 use bevy_cursor::prelude::*;
 
 fn main() {
-    panic!("YOLO");
     App::new()
         .add_plugins((DefaultPlugins, CursorInfoPlugin))
         .add_systems(Startup, setup)
