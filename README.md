@@ -54,7 +54,7 @@ fn print_cursor_position(cursor: Res<CursorInfo>) {
 ## Features
 
 - `2d` opt-in the computation of the world position of the cursor.
-- `3d` opt-in the computation of the [ray](https://docs.rs/bevy/0.11.0/bevy/index.html) emitted by the cursor through the camera(disabled by default).
+- `3d` opt-in the computation of the [ray](https://docs.rs/bevy/0.11.0/bevy/index.html) emitted by the cursor through the camera (disabled by default).
 
 ## Bevy compatible version
 
