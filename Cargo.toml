@@ -1,0 +1,55 @@
+[package]
+name = "bevy_cursor"
+version = "0.1.0"
+edition = "2021"
+authors = ["Tristan Guichaoua <tguichaoua.dev@gmail.com>"]
+description = "A bevy plugin to track informations about the cursor"
+repository = "github.com/tguichaoua/bevy_cursor"
+license = "MIT OR Apache-2.0"
+keywords = ["bevy", "cursor", "window", "camera"]
+categories = ["game-engines"]
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+default = ["2d"]
+2d = []
+3d = []
+
+
+[dependencies]
+bevy = { version = "0.11.0", default-features = false, features = [
+    "bevy_render",
+] }
+smallvec = { version = "1.11.0", features = ["union"] }
+
+[dev-dependencies]
+bevy = { version = "0.11.0", default-features = false, features = [
+    "bevy_ui",
+    "bevy_winit",
+    "default_font",
+    "png",
+] }
+# bevy_ecs_tilemap = "0.11.0"
+bevy_ecs_tilemap = { git = "https://github.com/StarArawn/bevy_ecs_tilemap.git", rev = "fbda80c735bf7faaa2cc4d79524cfbf016044a0f" }
+bevy_pancam = "0.9.0"
+
+[package.metadata.docs.rs]
+# To build locally:
+# RUSTDOCFLAGS="--cfg docsrs" cargo +nightly doc --all-features --no-deps --open
+all-features = true
+# enable unstable features in the documentation
+rustdoc-args = ["--cfg", "docsrs"]
+
+[[example]]
+name = "basic"
+required-features = ["2d"]
+
+[[example]]
+name = "multiple_windows"
+required-features = ["2d"]
+
+[[example]]
+name = "tilemap"
+required-features = ["2d"]
