@@ -25,11 +25,12 @@ The following cursor informations are available via the `CursorInfo` resource:
 
 ## Example
 
-```rust
+```rust ,no_run
 use bevy::prelude::*;
 use bevy_cursor::prelude::*;
 
 fn main() {
+    panic!("YOLO");
     App::new()
         .add_plugins((DefaultPlugins, CursorInfoPlugin))
         .add_systems(Startup, setup)
