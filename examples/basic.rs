@@ -10,7 +10,7 @@ fn main() {
 }
 
 fn setup(mut commands: Commands) {
-    // A camera is required
+    // A camera is required to compute the world position of the cursor
     commands.spawn(Camera2dBundle::default());
 }
 
