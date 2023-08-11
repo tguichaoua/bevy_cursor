@@ -9,7 +9,7 @@ license = "MIT OR Apache-2.0"
 keywords = ["bevy", "cursor", "window", "camera"]
 categories = ["game-engines"]
 
-exclude = [".github/", "examples/", "assets/"]
+exclude = [".github/", "assets/"]
 
 [features]
 default = ["2d"]
