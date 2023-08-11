@@ -27,6 +27,7 @@ bevy = { version = "0.11.0", default-features = false, features = [
     "bevy_winit",
     "default_font",
     "png",
+    "x11",
 ] }
 # bevy_ecs_tilemap = "0.11.0"
 bevy_ecs_tilemap = { git = "https://github.com/StarArawn/bevy_ecs_tilemap.git", rev = "fbda80c735bf7faaa2cc4d79524cfbf016044a0f" }
