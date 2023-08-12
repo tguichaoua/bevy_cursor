@@ -15,7 +15,7 @@
 
 ---
 
-The following cursor informations are available via the `CursorInfo` resource:
+The following cursor informations are available via the [`CursorInfo`] resource:
 
 - The entity id of the window on which the cursor is currently;
 - The entity if of the camera on which the cursor is currently;
@@ -63,4 +63,5 @@ fn print_cursor_position(cursor: Res<CursorInfo>) {
 | 0.11 | 0.1         |
 
 [`bevy`]: https://github.com/bevyengine/bevy
+[`CursorInfo`]: https://docs.rs/bevy_cursor/latest/bevy_cursor/struct.CursorInfo.html
 [ray]: https://docs.rs/bevy/0.11.0/bevy/math/struct.Ray.html
