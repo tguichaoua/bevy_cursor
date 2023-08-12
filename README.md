@@ -11,7 +11,7 @@
 [Build Status]: https://github.com/tguichaoua/bevy_cursor/actions/workflows/ci.yml/badge.svg?branch=main
 [actions]: https://github.com/tguichaoua/bevy_cursor/actions/workflows/ci.yml
 
-**Bevy Cursor is a [`bevy`](https://github.com/bevyengine/bevy) plugin to track informations about the cursor.**
+**Bevy Cursor is a [`bevy`] plugin to track informations about the cursor.**
 
 ---
 
@@ -62,4 +62,5 @@ fn print_cursor_position(cursor: Res<CursorInfo>) {
 | ---- | ----------- |
 | 0.11 | 0.1         |
 
+[`bevy`]: https://github.com/bevyengine/bevy
 [ray]: https://docs.rs/bevy/0.11.0/bevy/math/struct.Ray.html
