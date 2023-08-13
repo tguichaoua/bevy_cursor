@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      level:
+        type: choice
+        description: Version to release
+        required: true
+        options:
+          - patch
+          - minor
+          - major
+        #   - release
+        #   - rc
+        #   - beta
+        #   - alpha
+
+jobs:
+  make-release-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install cargo-release
+        run: cargo install cargo-release
+
+      - name: Bump version
+        run: |
+          # --no-publish: do not publish to crates.io
+          # --no-tag: do not push tag for each new version
+          # --no-push: do not push the update commits
+          # --execute: not a dry run
+          cargo release ${{ inputs.level }} \
+          --no-publish \
+          --no-tag \
+          --no-push \
+          --no-confirm \
+          --execute
+
+      - name: Get package version
+        id: cargo-get
+        uses: nicolaiunrein/cargo-get@master
+        with:
+          subcommand: package.version
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v5
+        with:
+          delete-branch: true
+          base: "main"
+          branch: "release/${{ steps.cargo-get.outputs.metadata }}"
+          labels: "C-Release"
+          title: "Release ${{ steps.cargo-get.outputs.metadata }}"
+          body: |
+            This PR has been auto-generated
