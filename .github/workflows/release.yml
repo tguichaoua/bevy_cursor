@@ -20,10 +20,29 @@ jobs:
   make-release-pr:
     runs-on: ubuntu-latest
     steps:
+      # cache cargo release so we don't have to install it every time
+      - name: Cache cargo release and rust install steps
+        id: cache-release
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ~/target/
+          key: ${{ runner.os }}-cargo-release
+
       - uses: actions/checkout@v3
 
       - name: Install cargo-release
+        if: steps.cache-release.outputs.cache-hit != 'true'
         run: cargo install cargo-release
+
+      - name: Setup Git info
+        run: |
+          git config user.name "Github Actions: Release"
+          git config user.email "<>"
 
       - name: Bump version
         run: |
@@ -51,6 +70,7 @@ jobs:
           base: "main"
           branch: "release/${{ steps.cargo-get.outputs.metadata }}"
           labels: "C-Release"
-          title: "Release ${{ steps.cargo-get.outputs.metadata }}"
+          title: "Preparing Release ${{ steps.cargo-get.outputs.metadata }}"
           body: |
+            Preparing the release of `${{ steps.cargo-get.outputs.metadata }}`
             This PR has been auto-generated
