@@ -69,6 +69,7 @@ jobs:
       - name: Create PR
         uses: peter-evans/create-pull-request@v5
         with:
+          token: ${{ secrets.PAT }}
           delete-branch: true
           base: "main"
           branch: "release/${{ steps.cargo-get.outputs.metadata }}"
