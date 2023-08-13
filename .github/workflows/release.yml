@@ -19,6 +19,9 @@ on:
 jobs:
   make-release-pr:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       # cache cargo release so we don't have to install it every time
       - name: Cache cargo release and rust install steps
