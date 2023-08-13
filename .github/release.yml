@@ -2,3 +2,4 @@ changelog:
   exclude:
     labels:
       - C-Meta
+      - C-Release
