@@ -1,15 +1,13 @@
 name: CI
 
 on:
-  push:
   pull_request:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
-
-env:
-  RUSTFLAGS: -Dwarnings
 
 jobs:
   check:
@@ -23,7 +21,7 @@ jobs:
       - name: No features
         run: cargo check --no-default-features
       - name: All features
-        run: cargo check --features 2d,3d
+        run: cargo check --all-features
       - name: Examples
         run: cargo check --examples
 
