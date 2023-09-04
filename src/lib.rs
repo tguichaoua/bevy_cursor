@@ -184,7 +184,9 @@ fn update_cursor_info(
 
     for (win_ref, window, is_primary) in &window_q {
         // Get the window that contains the cursor.
-        let Some(cursor_position) = window.cursor_position() else { continue; };
+        let Some(cursor_position) = window.cursor_position() else {
+            continue;
+        };
         let physical_cursor_position = window.physical_cursor_position().unwrap();
 
         // Get the cameras that render into the current window.
@@ -222,10 +224,14 @@ fn update_cursor_info(
             }
 
             #[cfg(feature = "2d")]
-            let Some(position) = camera.viewport_to_world_2d(cam_t, cursor_position) else { continue; };
+            let Some(position) = camera.viewport_to_world_2d(cam_t, cursor_position) else {
+                continue;
+            };
 
             #[cfg(feature = "3d")]
-            let Some(ray) = camera.viewport_to_world(cam_t, cursor_position) else { continue; };
+            let Some(ray) = camera.viewport_to_world(cam_t, cursor_position) else {
+                continue;
+            };
 
             cursor.set_if_neq(Some(CursorData {
                 #[cfg(feature = "2d")]
