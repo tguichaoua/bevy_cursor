@@ -11,11 +11,11 @@
 [Build Status]: https://github.com/tguichaoua/bevy_cursor/actions/workflows/ci.yml/badge.svg?branch=main
 [actions]: https://github.com/tguichaoua/bevy_cursor/actions/workflows/ci.yml
 
-**Bevy Cursor is a [`bevy`] plugin to track informations about the cursor.**
+**Bevy Cursor is a [`bevy`] plugin to track information about the cursor.**
 
 ---
 
-The following cursor informations are available via the [`CursorInfo`] resource:
+The following cursor information is available via the [`CursorInfo`] resource:
 
 - The entity id of the window on which the cursor is currently;
 - The entity if of the camera on which the cursor is currently;

@@ -19,7 +19,7 @@ pub mod prelude {
 
 // =============================================================================
 
-/// This plugin adds support to get informations about the cursor.
+/// This plugin adds support to get information about the cursor.
 pub struct CursorInfoPlugin;
 
 impl Plugin for CursorInfoPlugin {
@@ -58,7 +58,7 @@ pub struct UpdateCursorInfo;
 
 // =============================================================================
 
-/// A resource that provide informations about the cursor.
+/// A resource that provides information about the cursor.
 ///
 /// # Example
 ///
@@ -78,7 +78,7 @@ pub struct UpdateCursorInfo;
 #[derive(Resource, Default)]
 pub struct CursorInfo(Option<CursorData>);
 
-/// Informations about the cursor, provided by [`CursorInfo`].
+/// Information about the cursor, provided by [`CursorInfo`].
 #[derive(Debug, Clone, PartialEq)]
 pub struct CursorData {
     /// The position of the cursor in the world.
@@ -109,7 +109,7 @@ pub struct CursorData {
 }
 
 impl CursorInfo {
-    /// The informations about the cursor.
+    /// The information about the cursor.
     ///
     /// The value is `None` if the cursor is not in any window.
     #[inline]

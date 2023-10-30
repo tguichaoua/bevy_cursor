@@ -295,7 +295,7 @@ fn set_camera_viewports(
 
 // =============================================================================
 
-/// Update the textes with the cursor informations.
+/// Update the texts with the cursor information.
 #[allow(clippy::type_complexity)]
 fn print_cursor_data(
     cursor: Res<CursorInfo>,
