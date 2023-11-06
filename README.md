@@ -60,6 +60,7 @@ fn print_cursor_position(cursor: Res<CursorInfo>) {
 
 | bevy | bevy_cursor |
 | ---- | ----------- |
+| 0.12 | 0.2         |
 | 0.11 | 0.1         |
 
 [`bevy`]: https://github.com/bevyengine/bevy
