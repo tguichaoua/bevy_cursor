@@ -50,6 +50,7 @@ required-features = ["2d"]
 name = "multiple_windows"
 required-features = ["2d"]
 
-[[example]]
-name = "tilemap"
-required-features = ["2d"]
+# removed until bevy_ecs_tilemap is up-to-date with bevy 0.12
+# [[example]]
+# name = "tilemap"
+# required-features = ["2d"]
