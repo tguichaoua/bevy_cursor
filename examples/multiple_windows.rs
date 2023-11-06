@@ -266,7 +266,7 @@ fn set_camera_viewports(
     mut left_camera_q: Query<&mut Camera, (With<LeftCamera>, Without<RightCamera>)>,
     mut right_camera_q: Query<&mut Camera, With<RightCamera>>,
 ) {
-    for resize_event in resize_events.iter() {
+    for resize_event in resize_events.read() {
         let Ok(window) = secondary_window_q.get(resize_event.window) else {
             continue;
         };
