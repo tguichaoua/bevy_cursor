@@ -18,7 +18,7 @@
 The following cursor information is available via the [`CursorInfo`] resource:
 
 - The entity id of the window on which the cursor is currently;
-- The entity if of the camera on which the cursor is currently;
+- The entity id of the camera on which the cursor is currently;
 - The position of the cursor on the window (logical position);
 - The 2D world position of the cursor (if the feature `2d` is enabled);
 - The [ray] emitted by the cursor through the camera (if the feature `3d` is enabled);
@@ -65,4 +65,4 @@ fn print_cursor_position(cursor: Res<CursorInfo>) {
 
 [`bevy`]: https://github.com/bevyengine/bevy
 [`CursorInfo`]: https://docs.rs/bevy_cursor/latest/bevy_cursor/struct.CursorInfo.html
-[ray]: https://docs.rs/bevy/0.11.0/bevy/math/struct.Ray.html
+[ray]: https://docs.rs/bevy/0.12.0/bevy/math/struct.Ray.html
