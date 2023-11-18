@@ -18,7 +18,7 @@
 The following cursor information is available via the [`CursorInfo`] resource:
 
 - The entity id of the window on which the cursor is currently;
-- The entity if of the camera on which the cursor is currently;
+- The entity id of the camera on which the cursor is currently;
 - The position of the cursor on the window (logical position);
 - The 2D world position of the cursor (if the feature `2d` is enabled);
 - The [ray] emitted by the cursor through the camera (if the feature `3d` is enabled);
