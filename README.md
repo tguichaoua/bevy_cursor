@@ -65,4 +65,4 @@ fn print_cursor_position(cursor: Res<CursorInfo>) {
 
 [`bevy`]: https://github.com/bevyengine/bevy
 [`CursorInfo`]: https://docs.rs/bevy_cursor/latest/bevy_cursor/struct.CursorInfo.html
-[ray]: https://docs.rs/bevy/0.11.0/bevy/math/struct.Ray.html
+[ray]: https://docs.rs/bevy/0.12.0/bevy/math/struct.Ray.html
