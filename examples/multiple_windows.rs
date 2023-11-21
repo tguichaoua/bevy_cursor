@@ -1,3 +1,12 @@
+#![allow(
+    missing_docs,
+    clippy::missing_docs_in_private_items,
+
+    // We disable some restrictive lints for the sake of example
+    clippy::indexing_slicing,
+    clippy::unwrap_used
+)]
+
 use bevy::core_pipeline::clear_color::ClearColorConfig;
 use bevy::prelude::*;
 use bevy::render::camera::{RenderTarget, Viewport};
@@ -266,6 +275,8 @@ fn set_camera_viewports(
     mut left_camera_q: Query<&mut Camera, (With<LeftCamera>, Without<RightCamera>)>,
     mut right_camera_q: Query<&mut Camera, With<RightCamera>>,
 ) {
+    // NOTE: we don't care about remainder on integer division here
+    #[allow(clippy::integer_division)]
     for resize_event in resize_events.read() {
         let Ok(window) = secondary_window_q.get(resize_event.window) else {
             continue;
@@ -311,22 +322,22 @@ fn print_cursor_data(
     name_q: Query<&Name>,
 ) {
     // A closure that update the `Text`s' value.
-    let mut set_texts = |a, b, c, d| {
+    let mut set_texts = |window_str, camera_str, viewport_str, world_pos_str| {
         let mut window_text_q = set.p0();
         let mut window_text = window_text_q.single_mut();
-        window_text.sections[1].value = a;
+        window_text.sections[1].value = window_str;
 
         let mut camera_text_q = set.p1();
         let mut camera_text = camera_text_q.single_mut();
-        camera_text.sections[1].value = b;
+        camera_text.sections[1].value = camera_str;
 
         let mut viewport_position_text_q = set.p2();
         let mut viewport_position_text = viewport_position_text_q.single_mut();
-        viewport_position_text.sections[1].value = c;
+        viewport_position_text.sections[1].value = viewport_str;
 
         let mut world_position_text_q = set.p3();
         let mut world_position_text = world_position_text_q.single_mut();
-        world_position_text.sections[1].value = d;
+        world_position_text.sections[1].value = world_pos_str;
     };
 
     if let Some(cursor) = cursor.get() {

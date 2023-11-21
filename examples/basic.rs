@@ -1,3 +1,5 @@
+#![allow(missing_docs, clippy::missing_docs_in_private_items)]
+
 use bevy::prelude::*;
 use bevy_cursor::prelude::*;
 
