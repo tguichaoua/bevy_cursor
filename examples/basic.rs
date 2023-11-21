@@ -1,3 +1,5 @@
+#![allow(missing_docs)]
+
 use bevy::prelude::*;
 use bevy_cursor::prelude::*;
 

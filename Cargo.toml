@@ -4,6 +4,7 @@ version = "0.2.0"
 edition = "2021"
 authors = ["Tristan Guichaoua <tguichaoua.dev@gmail.com>"]
 description = "A bevy plugin to track information about the cursor"
+
 repository = "https://github.com/tguichaoua/bevy_cursor"
 license = "MIT OR Apache-2.0"
 keywords = ["bevy", "cursor", "window", "camera"]
@@ -11,17 +12,26 @@ categories = ["game-engines"]
 
 exclude = [".github/", "assets/"]
 
+# ---------------------------------------------------------------------------- #
+
 [features]
 default = ["2d"]
 2d = []
 3d = []
 
+# ---------------------------------------------------------------------------- #
+
+[lints.rust]
+missing_docs = "deny"
+
+# ---------------------------------------------------------------------------- #
 
 [dependencies]
 bevy = { version = "0.12.0", default-features = false, features = [
     "bevy_render",
 ] }
 smallvec = { version = "1.11.0", features = ["union"] }
+
 
 [dev-dependencies]
 bevy = { version = "0.12.0", default-features = false, features = [
@@ -32,12 +42,16 @@ bevy = { version = "0.12.0", default-features = false, features = [
     "x11",
 ] }
 
+# ---------------------------------------------------------------------------- #
+
 [package.metadata.docs.rs]
 # To build locally:
 # RUSTDOCFLAGS="--cfg docsrs" cargo +nightly doc --all-features --no-deps --open
 all-features = true
 # enable unstable features in the documentation
 rustdoc-args = ["--cfg", "docsrs"]
+
+# ---------------------------------------------------------------------------- #
 
 [[example]]
 name = "basic"
@@ -46,3 +60,5 @@ required-features = ["2d"]
 [[example]]
 name = "multiple_windows"
 required-features = ["2d"]
+
+# ---------------------------------------------------------------------------- #

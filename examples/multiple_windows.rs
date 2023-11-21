@@ -1,3 +1,5 @@
+#![allow(missing_docs)]
+
 use bevy::core_pipeline::clear_color::ClearColorConfig;
 use bevy::prelude::*;
 use bevy::render::camera::{RenderTarget, Viewport};
