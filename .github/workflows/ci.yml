@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo clippy --all-features -- -D warnings
+      - run: cargo clippy --all-features -- -D warnings -D clippy::dbg_macro -D clippy::use_debug
 
   doc:
     runs-on: ubuntu-latest

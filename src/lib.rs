@@ -176,6 +176,7 @@ impl CursorInfo {
 
 /* -------------------------------------------------------------------------- */
 
+/// Reads the current cursor position and update the [`CursorInfo`] resource.
 fn update_cursor_info(
     window_q: Query<(Entity, &Window, Has<PrimaryWindow>)>,
     camera_q: Query<(Entity, &GlobalTransform, &Camera)>,
@@ -188,12 +189,14 @@ fn update_cursor_info(
         let Some(cursor_position) = window.cursor_position() else {
             continue;
         };
-        let physical_cursor_position = window.physical_cursor_position().unwrap();
+        let Some(physical_cursor_position) = window.physical_cursor_position() else {
+            continue;
+        };
 
         // Get the cameras that render into the current window.
         let mut cameras = camera_q
             .iter()
-            .filter(|(_, _, camera)| match camera.target {
+            .filter(|&(_, _, camera)| match camera.target {
                 RenderTarget::Window(WindowRef::Primary) => is_primary,
                 RenderTarget::Window(WindowRef::Entity(target_ref)) => target_ref == win_ref,
                 RenderTarget::Image(_) | RenderTarget::TextureView(_) => false,
@@ -203,15 +206,16 @@ fn update_cursor_info(
 
         // Cameras with a higher order are rendered later, and thus on top of lower order cameras.
         // We want to handle them first.
-        cameras.sort_unstable_by_key(|(_, _, camera)| camera.order);
+        cameras.sort_unstable_by_key(|&(_, _, camera)| camera.order);
         let cameras = cameras.into_iter().rev();
 
         for (camera_ref, cam_t, camera) in cameras {
+            #[allow(clippy::let_underscore_untyped)]
             let _ = cam_t; // Note: disable the unused_variables warning in no-default-feature.
 
             // Does the camera viewport contain the cursor ?
-            let contain_cursor = match &camera.viewport {
-                Some(viewport) => {
+            let contain_cursor = match camera.viewport {
+                Some(ref viewport) => {
                     let Vec2 { x, y } = physical_cursor_position;
                     let Vec2 { x: vx, y: vy } = viewport.physical_position.as_vec2();
                     let Vec2 { x: vw, y: vh } = viewport.physical_size.as_vec2();
