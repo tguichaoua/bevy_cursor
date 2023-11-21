@@ -72,6 +72,8 @@ unused_tuple_struct_fields = "warn"
 variant_size_differences = "warn"
 
 [lints.clippy]
+
+# NOTE: these lints are from the "restriction" group. Feel free to remove those who are too noisy.
 absolute_paths = "warn"
 allow_attributes = "warn"
 allow_attributes_without_reason = "warn"
