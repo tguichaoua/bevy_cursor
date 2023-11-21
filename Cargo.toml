@@ -21,6 +21,43 @@ default = ["2d"]
 
 # ---------------------------------------------------------------------------- #
 
+[dependencies]
+bevy = { version = "0.12.0", default-features = false, features = [
+    "bevy_render",
+] }
+smallvec = { version = "1.11.0", features = ["union"] }
+
+
+[dev-dependencies]
+bevy = { version = "0.12.0", default-features = false, features = [
+    "bevy_ui",
+    "bevy_winit",
+    "default_font",
+    "png",
+    "x11",
+] }
+
+# ---------------------------------------------------------------------------- #
+
+[package.metadata.docs.rs]
+# To build locally:
+# RUSTDOCFLAGS="--cfg docsrs" cargo +nightly doc --all-features --no-deps --open
+all-features = true
+# enable unstable features in the documentation
+rustdoc-args = ["--cfg", "docsrs"]
+
+# ---------------------------------------------------------------------------- #
+
+[[example]]
+name = "basic"
+required-features = ["2d"]
+
+[[example]]
+name = "multiple_windows"
+required-features = ["2d"]
+
+# ---------------------------------------------------------------------------- #
+
 [lints.rust]
 absolute_paths_not_starting_with_crate = "warn"
 let_underscore_drop = "warn"
@@ -124,42 +161,5 @@ unwrap_in_result = "warn"
 unwrap_used = "warn"
 verbose_file_reads = "warn"
 wildcard_enum_match_arm = "warn"
-
-# ---------------------------------------------------------------------------- #
-
-[dependencies]
-bevy = { version = "0.12.0", default-features = false, features = [
-    "bevy_render",
-] }
-smallvec = { version = "1.11.0", features = ["union"] }
-
-
-[dev-dependencies]
-bevy = { version = "0.12.0", default-features = false, features = [
-    "bevy_ui",
-    "bevy_winit",
-    "default_font",
-    "png",
-    "x11",
-] }
-
-# ---------------------------------------------------------------------------- #
-
-[package.metadata.docs.rs]
-# To build locally:
-# RUSTDOCFLAGS="--cfg docsrs" cargo +nightly doc --all-features --no-deps --open
-all-features = true
-# enable unstable features in the documentation
-rustdoc-args = ["--cfg", "docsrs"]
-
-# ---------------------------------------------------------------------------- #
-
-[[example]]
-name = "basic"
-required-features = ["2d"]
-
-[[example]]
-name = "multiple_windows"
-required-features = ["2d"]
 
 # ---------------------------------------------------------------------------- #
