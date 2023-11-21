@@ -4,20 +4,22 @@
 //!
 #![doc = include_str!("../README.md")]
 
+/* -------------------------------------------------------------------------- */
+
 use bevy::ecs::query::Has;
 use bevy::prelude::*;
 use bevy::render::camera::RenderTarget;
 use bevy::window::{PrimaryWindow, WindowRef};
 use smallvec::SmallVec;
 
-// =============================================================================
+/* -------------------------------------------------------------------------- */
 
 /// Export common types.
 pub mod prelude {
     pub use crate::{CursorInfo, CursorInfoPlugin, UpdateCursorInfo};
 }
 
-// =============================================================================
+/* -------------------------------------------------------------------------- */
 
 /// This plugin adds support to get information about the cursor.
 pub struct CursorInfoPlugin;
@@ -29,7 +31,7 @@ impl Plugin for CursorInfoPlugin {
     }
 }
 
-// =============================================================================
+/* -------------------------------------------------------------------------- */
 
 /// A [`SystemSet`] in which [`CursorInfo`] is updated.
 ///
@@ -56,7 +58,7 @@ impl Plugin for CursorInfoPlugin {
 #[derive(SystemSet, Hash, Debug, PartialEq, Eq, Clone, Copy)]
 pub struct UpdateCursorInfo;
 
-// =============================================================================
+/* -------------------------------------------------------------------------- */
 
 /// A resource that provides information about the cursor.
 ///
@@ -173,7 +175,7 @@ impl CursorInfo {
     }
 }
 
-// =============================================================================
+/* -------------------------------------------------------------------------- */
 
 fn update_cursor_info(
     window_q: Query<(Entity, &Window, Has<PrimaryWindow>)>,
@@ -253,3 +255,5 @@ fn update_cursor_info(
     // The cursor is outside of every windows.
     cursor.set_if_neq(None);
 }
+
+/* -------------------------------------------------------------------------- */
