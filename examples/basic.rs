@@ -1,4 +1,4 @@
-#![allow(missing_docs, clippy::missing_docs_in_private_items)]
+//! A basic example that print the position of the cursor.
 
 use bevy::prelude::*;
 use bevy_cursor::prelude::*;
