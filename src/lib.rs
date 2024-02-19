@@ -1,9 +1,24 @@
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
 
+//! A [`bevy`] plugin to track information about the cursor.
 //!
-#![doc = include_str!("../README.md")]
-
-/* -------------------------------------------------------------------------- */
+//! - The [entity id] of the window on which the cursor is currently;
+//! - The [entity id] of the camera on which the cursor is currently;
+//! - The position of the cursor on the window (logical position);
+//! - The 2D world position of the cursor (if the feature `2d` is enabled);
+//! - The [ray] emitted by the cursor through the camera (if the feature `3d` is enabled);
+//!
+//! # Bevy compatible version
+//!
+//! | bevy | bevy_cursor |
+//! | ---- | ----------- |
+//! | 0.13 | 0.3         |
+//! | 0.12 | 0.2         |
+//! | 0.11 | 0.1         |
+//!
+//! [`bevy`]: https://github.com/bevyengine/bevy
+//! [entity id]: https://docs.rs/bevy/0.13.0/bevy/ecs/entity/struct.Entity.html
+//! [ray]: https://docs.rs/bevy/0.13.0/bevy/math/struct.Ray3d.html
 
 use bevy::ecs::query::Has;
 use bevy::prelude::*;
@@ -13,7 +28,7 @@ use smallvec::SmallVec;
 
 /* -------------------------------------------------------------------------- */
 
-/// Export common types.
+#[allow(missing_docs)]
 pub mod prelude {
     pub use crate::{CursorInfo, CursorInfoPlugin, UpdateCursorInfo};
 }
