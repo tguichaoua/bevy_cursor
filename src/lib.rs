@@ -104,6 +104,7 @@ pub struct CursorData {
     /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
     #[cfg(feature = "2d")]
     pub position: Vec2,
+
     /// The [`Ray3d`] emitted by the cursor from the camera.
     ///
     /// See [`Camera::viewport_to_world`].
@@ -112,14 +113,17 @@ pub struct CursorData {
     /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
     #[cfg(feature = "3d")]
     pub ray: Ray3d,
+
     /// The cursor position in the window in logical pixels.
     ///
     /// See [`Window::cursor_position`].
     ///
     /// [`Window::cursor_position`]: https://docs.rs/bevy/0.13.0/bevy/window/struct.Window.html#method.cursor_position
     pub window_position: Vec2,
+
     /// The entity id of the window that contains the cursor.
     pub window: Entity,
+
     /// The entity id of the camera used to compute the world position of the cursor.
     pub camera: Entity,
 }
