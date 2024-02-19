@@ -96,7 +96,7 @@ pub struct CursorData {
     /// [`Ray`]: https://docs.rs/bevy/0.12.0/bevy/math/struct.Ray.html
     /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
     #[cfg(feature = "3d")]
-    pub ray: Ray,
+    pub ray: Ray3d,
     /// The cursor position in the window in logical pixels.
     ///
     /// See [`Window::cursor_position`].
@@ -141,7 +141,7 @@ impl CursorInfo {
     /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
     #[cfg(feature = "3d")]
     #[inline]
-    pub fn ray(&self) -> Option<Ray> {
+    pub fn ray(&self) -> Option<Ray3d> {
         self.get().map(|data| data.ray)
     }
 
