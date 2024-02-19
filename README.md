@@ -25,7 +25,7 @@ use bevy_cursor::prelude::*;
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, CursorInfoPlugin))
+        .add_plugins((DefaultPlugins, TrackCursorPlugin))
         .add_systems(Startup, setup)
         .add_systems(Update, print_cursor_position)
         .run();

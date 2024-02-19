@@ -30,15 +30,15 @@ use smallvec::SmallVec;
 
 #[allow(missing_docs)]
 pub mod prelude {
-    pub use crate::{CursorInfo, CursorInfoPlugin, UpdateCursorInfo};
+    pub use crate::{CursorInfo, TrackCursorPlugin, UpdateCursorInfo};
 }
 
 /* -------------------------------------------------------------------------- */
 
-/// This plugin adds support to get information about the cursor.
-pub struct CursorInfoPlugin;
+/// This plugin adds support to track the cursor's position and more.
+pub struct TrackCursorPlugin;
 
-impl Plugin for CursorInfoPlugin {
+impl Plugin for TrackCursorPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<CursorInfo>()
             .add_systems(First, update_cursor_info.in_set(UpdateCursorInfo));
