@@ -15,17 +15,11 @@
 
 ---
 
-The following cursor information is available via the [`CursorInfo`] resource:
-
-- The entity id of the window on which the cursor is currently;
-- The entity id of the camera on which the cursor is currently;
-- The position of the cursor on the window (logical position);
-- The 2D world position of the cursor (if the feature `2d` is enabled);
-- The [ray] emitted by the cursor through the camera (if the feature `3d` is enabled);
+This plugin will track information about the position of the cursor, the window, and the camera that contains it and compute the position of the pointed point in the world position system.
 
 ## Example
 
-```rust ,no_run
+```rust
 use bevy::prelude::*;
 use bevy_cursor::prelude::*;
 
@@ -54,7 +48,7 @@ fn print_cursor_position(cursor: Res<CursorInfo>) {
 ## Features
 
 - `2d` opt-in the computation of the world position of the cursor.
-- `3d` opt-in the computation of the [ray] emitted by the cursor through the camera (disabled by default).
+- `3d` opt-in the computation of the [ray] emitted by the cursor through the camera.
 
 ## Bevy compatible version
 
@@ -65,5 +59,4 @@ fn print_cursor_position(cursor: Res<CursorInfo>) {
 | 0.11 | 0.1         |
 
 [`bevy`]: https://github.com/bevyengine/bevy
-[`CursorInfo`]: https://docs.rs/bevy_cursor/latest/bevy_cursor/struct.CursorInfo.html
 [ray]: https://docs.rs/bevy/0.13.0/bevy/math/struct.Ray3d.html
