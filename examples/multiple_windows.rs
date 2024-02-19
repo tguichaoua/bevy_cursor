@@ -7,7 +7,6 @@
     clippy::unwrap_used
 )]
 
-use bevy::core_pipeline::clear_color::ClearColorConfig;
 use bevy::prelude::*;
 use bevy::render::camera::{RenderTarget, Viewport};
 use bevy::window::{ExitCondition, WindowRef, WindowResized};
@@ -33,7 +32,7 @@ fn main() {
         .add_systems(Update, set_camera_viewports)
         .add_systems(
             Update,
-            print_cursor_data.run_if(resource_changed::<CursorInfo>()),
+            print_cursor_data.run_if(resource_changed::<CursorInfo>),
         )
         .run();
 }
@@ -139,11 +138,9 @@ fn setup(mut commands: Commands) {
                 camera: Camera {
                     target: RenderTarget::Window(WindowRef::Entity(secondary_window_ref)),
                     order: 1,
-                    ..default()
-                },
-                camera_2d: Camera2d {
                     // don't clear on the second camera because the first camera already cleared the window
                     clear_color: ClearColorConfig::None,
+                    ..default()
                 },
                 ..default()
             },
@@ -268,7 +265,7 @@ fn setup(mut commands: Commands) {
 
 // =============================================================================
 
-/// Update the viewport of the camera on the secondary window when this one is resized.
+/// Update the viewport of the cameras on the secondary window when this one is resized.
 fn set_camera_viewports(
     secondary_window_q: Query<&Window, With<SecondaryWindow>>,
     mut resize_events: EventReader<WindowResized>,

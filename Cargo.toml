@@ -22,14 +22,14 @@ default = ["2d"]
 # ---------------------------------------------------------------------------- #
 
 [dependencies]
-bevy = { version = "0.12.0", default-features = false, features = [
+bevy = { version = "0.13.0", default-features = false, features = [
     "bevy_render",
 ] }
 smallvec = { version = "1.11.0", features = ["union"] }
 
 
 [dev-dependencies]
-bevy = { version = "0.12.0", default-features = false, features = [
+bevy = { version = "0.13.0", default-features = false, features = [
     "bevy_ui",
     "bevy_winit",
     "default_font",
