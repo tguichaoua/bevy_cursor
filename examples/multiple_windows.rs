@@ -1,11 +1,4 @@
-#![allow(
-    missing_docs,
-    clippy::missing_docs_in_private_items,
-
-    // We disable some restrictive lints for the sake of example
-    clippy::indexing_slicing,
-    clippy::unwrap_used
-)]
+//! An example using two windows with multiple camera per window.
 
 use bevy::prelude::*;
 use bevy::render::camera::{RenderTarget, Viewport};

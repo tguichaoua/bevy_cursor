@@ -225,8 +225,7 @@ fn update_cursor_info(
         let cameras = cameras.into_iter().rev();
 
         for (camera_ref, cam_t, camera) in cameras {
-            #[allow(clippy::let_underscore_untyped)]
-            let _ = cam_t; // Note: disable the unused_variables warning in no-default-feature.
+            let _ = cam_t; // Note: disable the `unused_variables` warning in no-default-feature.
 
             // Does the camera viewport contain the cursor ?
             let contain_cursor = match camera.viewport {
