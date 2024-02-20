@@ -84,7 +84,7 @@ pub struct UpdateCursorLocation;
 /// ```
 /// # use bevy::prelude::*;
 /// # use bevy_cursor::prelude::*;
-/// fn foo(cursor: Res<CursorLocation>) {
+/// fn print_cursor_location(cursor: Res<CursorLocation>) {
 ///     if let Some(position) = cursor.position() {
 ///         info!("Cursor position: {position:?}");
 ///     } else {
@@ -92,7 +92,7 @@ pub struct UpdateCursorLocation;
 ///     }
 /// }
 ///
-/// # let _ = IntoSystem::into_system(foo);
+/// # let _ = IntoSystem::into_system(print_cursor_location);
 /// ```
 #[derive(Resource, Default)]
 pub struct CursorLocation(Option<Location>);
