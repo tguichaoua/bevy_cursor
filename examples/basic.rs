@@ -16,7 +16,7 @@ fn setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 }
 
-fn print_cursor_position(cursor: Res<CursorInfo>) {
+fn print_cursor_position(cursor: Res<CursorLocation>) {
     if let Some(position) = cursor.position() {
         info!("Cursor position: {position:?}");
     } else {

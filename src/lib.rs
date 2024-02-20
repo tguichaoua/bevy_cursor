@@ -30,7 +30,7 @@ use smallvec::SmallVec;
 
 #[allow(missing_docs)]
 pub mod prelude {
-    pub use crate::{CursorInfo, TrackCursorPlugin, UpdateCursorInfo};
+    pub use crate::{CursorLocation, TrackCursorPlugin, UpdateCursorInfo};
 }
 
 /* -------------------------------------------------------------------------- */
@@ -40,14 +40,14 @@ pub struct TrackCursorPlugin;
 
 impl Plugin for TrackCursorPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<CursorInfo>()
-            .add_systems(First, update_cursor_info.in_set(UpdateCursorInfo));
+        app.init_resource::<CursorLocation>()
+            .add_systems(First, update_cursor_location_res.in_set(UpdateCursorInfo));
     }
 }
 
 /* -------------------------------------------------------------------------- */
 
-/// A [`SystemSet`] in which [`CursorInfo`] is updated.
+/// A [`SystemSet`] in which [`CursorLocation`] is updated.
 ///
 /// # Example
 ///
@@ -62,8 +62,8 @@ impl Plugin for TrackCursorPlugin {
 ///     }
 /// }
 ///
-/// // Runs just after `CursorInfo` has been updated.
-/// fn foo(cursor: Res<CursorInfo>) {
+/// // Runs just after `CursorLocation` has been updated.
+/// fn foo(cursor: Res<CursorLocation>) {
 ///     /* ... */
 /// }
 /// ```
@@ -81,7 +81,7 @@ pub struct UpdateCursorInfo;
 /// ```
 /// # use bevy::prelude::*;
 /// # use bevy_cursor::prelude::*;
-/// fn foo(cursor: Res<CursorInfo>) {
+/// fn foo(cursor: Res<CursorLocation>) {
 ///     if let Some(position) = cursor.position() {
 ///         info!("Cursor position: {position:?}");
 ///     } else {
@@ -92,7 +92,7 @@ pub struct UpdateCursorInfo;
 /// # let _ = IntoSystem::into_system(foo);
 /// ```
 #[derive(Resource, Default)]
-pub struct CursorInfo(Option<Location>);
+pub struct CursorLocation(Option<Location>);
 
 /// Information about the location of the cursor (its position, window and camera).
 #[derive(Debug, Clone, PartialEq)]
@@ -128,7 +128,7 @@ pub struct Location {
     pub camera: Entity,
 }
 
-impl CursorInfo {
+impl CursorLocation {
     /// The information about the cursor.
     ///
     /// The value is `None` if the cursor is not in any window.
@@ -195,11 +195,11 @@ impl CursorInfo {
 
 /* -------------------------------------------------------------------------- */
 
-/// Reads the current cursor position and update the [`CursorInfo`] resource.
-fn update_cursor_info(
+/// Reads the current cursor position and update the [`CursorLocation`] resource.
+fn update_cursor_location_res(
     window_q: Query<(Entity, &Window, Has<PrimaryWindow>)>,
     camera_q: Query<(Entity, &GlobalTransform, &Camera)>,
-    cursor: ResMut<CursorInfo>,
+    cursor: ResMut<CursorLocation>,
 ) {
     let mut cursor = cursor.map_unchanged(|cursor| &mut cursor.0);
 
