@@ -118,9 +118,9 @@ pub struct Location {
     /// The entity id of the camera used to compute the world position of the cursor.
     pub camera: Entity,
 
-    /// The position of the cursor in the world.
+    /// The position of the cursor in the world coordinates.
     ///
-    /// See [`Camera::viewport_to_world_2d`].
+    /// This value is computed with [`Camera::viewport_to_world_2d`].
     ///
     /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
     #[cfg(feature = "2d")]
@@ -128,7 +128,7 @@ pub struct Location {
 
     /// The [`Ray3d`] emitted by the cursor from the camera.
     ///
-    /// See [`Camera::viewport_to_world`].
+    /// This value is computed with [`Camera::viewport_to_world`].
     ///
     /// [`Ray3d`]: https://docs.rs/bevy/0.13.0/bevy/math/struct.Ray3d.html
     /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
@@ -145,9 +145,9 @@ impl CursorLocation {
         self.0.as_ref()
     }
 
-    /// The position of the cursor in the world.
+    /// The position of the cursor in the world coordinates.
     ///
-    /// See [`Camera::viewport_to_world_2d`].
+    /// This value is computed with [`Camera::viewport_to_world_2d`].
     ///
     /// Returns [`None`] if the cursor is outside any window area.
     ///
@@ -160,7 +160,7 @@ impl CursorLocation {
 
     /// The [`Ray3d`] emitted by the cursor from the camera.
     ///
-    /// See [`Camera::viewport_to_world`].
+    /// This value is computed with [`Camera::viewport_to_world`].
     ///
     /// Returns [`None`] if the cursor is outside any window area.
     ///
