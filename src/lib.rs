@@ -36,6 +36,8 @@ pub mod prelude {
 /* -------------------------------------------------------------------------- */
 
 /// This plugin adds support to track the cursor's position, window, and camera.
+///
+/// Those values are provided by the [`CursorLocation`] resource.
 pub struct TrackCursorPlugin;
 
 impl Plugin for TrackCursorPlugin {
@@ -77,7 +79,10 @@ pub struct UpdateCursorLocation;
 
 /* -------------------------------------------------------------------------- */
 
-/// A resource that provides information about the cursor.
+/// A resource that provides the [`Location`] data of the cursor.
+///
+/// The [`Location`] is available only if the cursor is currently in one
+/// of the window of the application.
 ///
 /// # Example
 ///
@@ -97,7 +102,7 @@ pub struct UpdateCursorLocation;
 #[derive(Resource, Default)]
 pub struct CursorLocation(Option<Location>);
 
-/// Information about the location of the cursor (its position, window, and camera).
+/// The location of the cursor (its position, window, and camera).
 #[derive(Debug, Clone, PartialEq)]
 pub struct Location {
     /// The position of the cursor in the world.
@@ -132,7 +137,7 @@ pub struct Location {
 }
 
 impl CursorLocation {
-    /// The information about the cursor.
+    /// The [`Location`] of the cursor.
     ///
     /// The value is `None` if the cursor is not in any window.
     #[inline]
