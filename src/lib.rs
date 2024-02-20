@@ -92,11 +92,11 @@ pub struct UpdateCursorInfo;
 /// # let _ = IntoSystem::into_system(foo);
 /// ```
 #[derive(Resource, Default)]
-pub struct CursorInfo(Option<CursorData>);
+pub struct CursorInfo(Option<Location>);
 
-/// Information about the cursor, provided by [`CursorInfo`].
+/// Information about the location of the cursor (its position, window and camera).
 #[derive(Debug, Clone, PartialEq)]
-pub struct CursorData {
+pub struct Location {
     /// The position of the cursor in the world.
     ///
     /// See [`Camera::viewport_to_world_2d`].
@@ -133,7 +133,7 @@ impl CursorInfo {
     ///
     /// The value is `None` if the cursor is not in any window.
     #[inline]
-    pub fn get(&self) -> Option<&CursorData> {
+    pub fn get(&self) -> Option<&Location> {
         self.0.as_ref()
     }
 
@@ -256,7 +256,7 @@ fn update_cursor_info(
                 continue;
             };
 
-            cursor.set_if_neq(Some(CursorData {
+            cursor.set_if_neq(Some(Location {
                 #[cfg(feature = "2d")]
                 position,
 
