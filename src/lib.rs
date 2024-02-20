@@ -81,8 +81,8 @@ pub struct UpdateCursorLocation;
 
 /// A resource that provides the [`Location`] data of the cursor.
 ///
-/// The [`Location`] is available only if the cursor is currently in one
-/// of the window of the application.
+/// The [`Location`] is available only if the cursor is currently inside one
+/// of the windows area.
 ///
 /// # Example
 ///
@@ -139,7 +139,7 @@ pub struct Location {
 impl CursorLocation {
     /// The [`Location`] of the cursor.
     ///
-    /// The value is `None` if the cursor is not in any window.
+    /// Returns [`None`] if the cursor is outside any window area.
     #[inline]
     pub fn get(&self) -> Option<&Location> {
         self.0.as_ref()
@@ -149,7 +149,7 @@ impl CursorLocation {
     ///
     /// See [`Camera::viewport_to_world_2d`].
     ///
-    /// The value is `None` if the cursor is not in any window.
+    /// Returns [`None`] if the cursor is outside any window area.
     ///
     /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
     #[cfg(feature = "2d")]
@@ -162,7 +162,7 @@ impl CursorLocation {
     ///
     /// See [`Camera::viewport_to_world`].
     ///
-    /// The value is `None` if the cursor is not in any window.
+    /// Returns [`None`] if the cursor is outside any window area.
     ///
     /// [`Ray3d`]: https://docs.rs/bevy/0.13.0/bevy/math/struct.Ray3d.html
     /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
@@ -176,7 +176,7 @@ impl CursorLocation {
     ///
     /// See [`Window::cursor_position`].
     ///
-    /// The value is `None` if the cursor is not in any window.
+    /// Returns [`None`] if the cursor is outside any window area.
     ///
     /// [`Window::cursor_position`]: https://docs.rs/bevy/0.13.0/bevy/window/struct.Window.html#method.cursor_position
     #[inline]
@@ -186,7 +186,7 @@ impl CursorLocation {
 
     /// The entity id of the window that contains the cursor.
     ///
-    /// The value is `None` if the cursor is not in any window.
+    /// Returns [`None`] if the cursor is outside any window area.
     #[inline]
     pub fn window(&self) -> Option<Entity> {
         self.get().map(|data| data.window)
@@ -194,7 +194,7 @@ impl CursorLocation {
 
     /// The entity id of the camera used to compute the world position of the cursor.
     ///
-    /// The value is `None` if the cursor is not in any window.
+    /// Returns [`None`] if the cursor is outside any window area.
     #[inline]
     pub fn camera(&self) -> Option<Entity> {
         self.get().map(|data| data.camera)
