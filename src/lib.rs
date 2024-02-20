@@ -30,7 +30,7 @@ use smallvec::SmallVec;
 
 #[allow(missing_docs)]
 pub mod prelude {
-    pub use crate::{CursorLocation, TrackCursorPlugin, UpdateCursorInfo};
+    pub use crate::{CursorLocation, TrackCursorPlugin, UpdateCursorLocation};
 }
 
 /* -------------------------------------------------------------------------- */
@@ -40,8 +40,10 @@ pub struct TrackCursorPlugin;
 
 impl Plugin for TrackCursorPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<CursorLocation>()
-            .add_systems(First, update_cursor_location_res.in_set(UpdateCursorInfo));
+        app.init_resource::<CursorLocation>().add_systems(
+            First,
+            update_cursor_location_res.in_set(UpdateCursorLocation),
+        );
     }
 }
 
@@ -58,7 +60,7 @@ impl Plugin for TrackCursorPlugin {
 ///
 /// impl Plugin for MyPlugin {
 ///     fn build(&self, app: &mut App) {
-///         app.add_systems(First, foo.after(UpdateCursorInfo));
+///         app.add_systems(First, foo.after(UpdateCursorLocation));
 ///     }
 /// }
 ///
@@ -70,7 +72,7 @@ impl Plugin for TrackCursorPlugin {
 ///
 /// [`SystemSet`]: https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/trait.SystemSet.html
 #[derive(SystemSet, Hash, Debug, PartialEq, Eq, Clone, Copy)]
-pub struct UpdateCursorInfo;
+pub struct UpdateCursorLocation;
 
 /* -------------------------------------------------------------------------- */
 
