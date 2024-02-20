@@ -341,7 +341,7 @@ fn print_cursor_location(
                 name_q.get(cursor.camera).unwrap().0
             ),
             cursor.window_position.to_string(),
-            cursor.position.to_string(),
+            cursor.world_position.to_string(),
         );
     } else {
         set_texts(

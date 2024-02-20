@@ -17,7 +17,7 @@ fn setup(mut commands: Commands) {
 }
 
 fn print_cursor_location(cursor: Res<CursorLocation>) {
-    if let Some(position) = cursor.position() {
+    if let Some(position) = cursor.window_position() {
         info!("Cursor position: {position:?}");
     } else {
         info!("The cursor is not in any window");
