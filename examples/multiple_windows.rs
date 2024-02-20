@@ -19,13 +19,13 @@ fn main() {
             exit_condition: ExitCondition::OnPrimaryClosed,
             ..default()
         }))
-        .add_plugins(CursorInfoPlugin)
+        .add_plugins(TrackCursorPlugin)
         //
         .add_systems(Startup, setup)
         .add_systems(Update, set_camera_viewports)
         .add_systems(
             Update,
-            print_cursor_data.run_if(resource_changed::<CursorInfo>),
+            print_cursor_location.run_if(resource_changed::<CursorLocation>),
         )
         .run();
 }
@@ -265,8 +265,6 @@ fn set_camera_viewports(
     mut left_camera_q: Query<&mut Camera, (With<LeftCamera>, Without<RightCamera>)>,
     mut right_camera_q: Query<&mut Camera, With<RightCamera>>,
 ) {
-    // NOTE: we don't care about remainder on integer division here
-    #[allow(clippy::integer_division)]
     for resize_event in resize_events.read() {
         let Ok(window) = secondary_window_q.get(resize_event.window) else {
             continue;
@@ -296,10 +294,10 @@ fn set_camera_viewports(
 
 // =============================================================================
 
-/// Update the texts with the cursor information.
+/// Update the texts with the cursor location data.
 #[allow(clippy::type_complexity)]
-fn print_cursor_data(
-    cursor: Res<CursorInfo>,
+fn print_cursor_location(
+    cursor: Res<CursorLocation>,
 
     mut set: ParamSet<(
         Query<&mut Text, With<TextWindow>>,

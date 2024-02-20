@@ -25,7 +25,7 @@ use bevy_cursor::prelude::*;
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, CursorInfoPlugin))
+        .add_plugins((DefaultPlugins, TrackCursorPlugin))
         .add_systems(Startup, setup)
         .add_systems(Update, print_cursor_position)
         .run();
@@ -36,7 +36,7 @@ fn setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 }
 
-fn print_cursor_position(cursor: Res<CursorInfo>) {
+fn print_cursor_position(cursor: Res<CursorLocation>) {
     if let Some(position) = cursor.position() {
         info!("Cursor position: {position:?}");
     } else {

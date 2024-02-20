@@ -30,24 +30,26 @@ use smallvec::SmallVec;
 
 #[allow(missing_docs)]
 pub mod prelude {
-    pub use crate::{CursorInfo, CursorInfoPlugin, UpdateCursorInfo};
+    pub use crate::{CursorLocation, TrackCursorPlugin, UpdateCursorLocation};
 }
 
 /* -------------------------------------------------------------------------- */
 
-/// This plugin adds support to get information about the cursor.
-pub struct CursorInfoPlugin;
+/// This plugin adds support to track the cursor's position, window, and camera.
+pub struct TrackCursorPlugin;
 
-impl Plugin for CursorInfoPlugin {
+impl Plugin for TrackCursorPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<CursorInfo>()
-            .add_systems(First, update_cursor_info.in_set(UpdateCursorInfo));
+        app.init_resource::<CursorLocation>().add_systems(
+            First,
+            update_cursor_location_res.in_set(UpdateCursorLocation),
+        );
     }
 }
 
 /* -------------------------------------------------------------------------- */
 
-/// A [`SystemSet`] in which [`CursorInfo`] is updated.
+/// A [`SystemSet`] in which [`CursorLocation`] is updated during the [`First`] schedule.
 ///
 /// # Example
 ///
@@ -58,19 +60,20 @@ impl Plugin for CursorInfoPlugin {
 ///
 /// impl Plugin for MyPlugin {
 ///     fn build(&self, app: &mut App) {
-///         app.add_systems(First, foo.after(UpdateCursorInfo));
+///         app.add_systems(First, print_cursor_location.after(UpdateCursorLocation));
 ///     }
 /// }
 ///
-/// // Runs just after `CursorInfo` has been updated.
-/// fn foo(cursor: Res<CursorInfo>) {
+/// // Runs just after `CursorLocation` has been updated.
+/// fn print_cursor_location(cursor: Res<CursorLocation>) {
 ///     /* ... */
 /// }
 /// ```
 ///
 /// [`SystemSet`]: https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/trait.SystemSet.html
+/// [`First`]: https://docs.rs/bevy/0.13.0/bevy/app/struct.First.html
 #[derive(SystemSet, Hash, Debug, PartialEq, Eq, Clone, Copy)]
-pub struct UpdateCursorInfo;
+pub struct UpdateCursorLocation;
 
 /* -------------------------------------------------------------------------- */
 
@@ -81,7 +84,7 @@ pub struct UpdateCursorInfo;
 /// ```
 /// # use bevy::prelude::*;
 /// # use bevy_cursor::prelude::*;
-/// fn foo(cursor: Res<CursorInfo>) {
+/// fn print_cursor_location(cursor: Res<CursorLocation>) {
 ///     if let Some(position) = cursor.position() {
 ///         info!("Cursor position: {position:?}");
 ///     } else {
@@ -89,14 +92,14 @@ pub struct UpdateCursorInfo;
 ///     }
 /// }
 ///
-/// # let _ = IntoSystem::into_system(foo);
+/// # let _ = IntoSystem::into_system(print_cursor_location);
 /// ```
 #[derive(Resource, Default)]
-pub struct CursorInfo(Option<CursorData>);
+pub struct CursorLocation(Option<Location>);
 
-/// Information about the cursor, provided by [`CursorInfo`].
+/// Information about the location of the cursor (its position, window, and camera).
 #[derive(Debug, Clone, PartialEq)]
-pub struct CursorData {
+pub struct Location {
     /// The position of the cursor in the world.
     ///
     /// See [`Camera::viewport_to_world_2d`].
@@ -104,6 +107,7 @@ pub struct CursorData {
     /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
     #[cfg(feature = "2d")]
     pub position: Vec2,
+
     /// The [`Ray3d`] emitted by the cursor from the camera.
     ///
     /// See [`Camera::viewport_to_world`].
@@ -112,24 +116,27 @@ pub struct CursorData {
     /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
     #[cfg(feature = "3d")]
     pub ray: Ray3d,
+
     /// The cursor position in the window in logical pixels.
     ///
     /// See [`Window::cursor_position`].
     ///
     /// [`Window::cursor_position`]: https://docs.rs/bevy/0.13.0/bevy/window/struct.Window.html#method.cursor_position
     pub window_position: Vec2,
+
     /// The entity id of the window that contains the cursor.
     pub window: Entity,
+
     /// The entity id of the camera used to compute the world position of the cursor.
     pub camera: Entity,
 }
 
-impl CursorInfo {
+impl CursorLocation {
     /// The information about the cursor.
     ///
     /// The value is `None` if the cursor is not in any window.
     #[inline]
-    pub fn get(&self) -> Option<&CursorData> {
+    pub fn get(&self) -> Option<&Location> {
         self.0.as_ref()
     }
 
@@ -191,11 +198,11 @@ impl CursorInfo {
 
 /* -------------------------------------------------------------------------- */
 
-/// Reads the current cursor position and update the [`CursorInfo`] resource.
-fn update_cursor_info(
+/// Reads the current cursor position and update the [`CursorLocation`] resource.
+fn update_cursor_location_res(
     window_q: Query<(Entity, &Window, Has<PrimaryWindow>)>,
     camera_q: Query<(Entity, &GlobalTransform, &Camera)>,
-    cursor: ResMut<CursorInfo>,
+    cursor: ResMut<CursorLocation>,
 ) {
     let mut cursor = cursor.map_unchanged(|cursor| &mut cursor.0);
 
@@ -252,7 +259,7 @@ fn update_cursor_info(
                 continue;
             };
 
-            cursor.set_if_neq(Some(CursorData {
+            cursor.set_if_neq(Some(Location {
                 #[cfg(feature = "2d")]
                 position,
 
