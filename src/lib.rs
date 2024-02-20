@@ -105,6 +105,19 @@ pub struct CursorLocation(Option<Location>);
 /// The location of the cursor (its position, window, and camera).
 #[derive(Debug, Clone, PartialEq)]
 pub struct Location {
+    /// The cursor position in the window in logical pixels.
+    ///
+    /// See [`Window::cursor_position`].
+    ///
+    /// [`Window::cursor_position`]: https://docs.rs/bevy/0.13.0/bevy/window/struct.Window.html#method.cursor_position
+    pub window_position: Vec2,
+
+    /// The entity id of the window that contains the cursor.
+    pub window: Entity,
+
+    /// The entity id of the camera used to compute the world position of the cursor.
+    pub camera: Entity,
+
     /// The position of the cursor in the world.
     ///
     /// See [`Camera::viewport_to_world_2d`].
@@ -121,19 +134,6 @@ pub struct Location {
     /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
     #[cfg(feature = "3d")]
     pub ray: Ray3d,
-
-    /// The cursor position in the window in logical pixels.
-    ///
-    /// See [`Window::cursor_position`].
-    ///
-    /// [`Window::cursor_position`]: https://docs.rs/bevy/0.13.0/bevy/window/struct.Window.html#method.cursor_position
-    pub window_position: Vec2,
-
-    /// The entity id of the window that contains the cursor.
-    pub window: Entity,
-
-    /// The entity id of the camera used to compute the world position of the cursor.
-    pub camera: Entity,
 }
 
 impl CursorLocation {
@@ -265,15 +265,15 @@ fn update_cursor_location_res(
             };
 
             cursor.set_if_neq(Some(Location {
+                window_position: cursor_position,
+                window: win_ref,
+                camera: camera_ref,
+
                 #[cfg(feature = "2d")]
                 position,
 
                 #[cfg(feature = "3d")]
                 ray,
-
-                window_position: cursor_position,
-                window: win_ref,
-                camera: camera_ref,
             }));
 
             // We found the correct window and camera, we can stop here.
