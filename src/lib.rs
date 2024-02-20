@@ -35,7 +35,7 @@ pub mod prelude {
 
 /* -------------------------------------------------------------------------- */
 
-/// This plugin adds support to track the cursor's position and more.
+/// This plugin adds support to track the cursor's position, window, and camera.
 pub struct TrackCursorPlugin;
 
 impl Plugin for TrackCursorPlugin {
