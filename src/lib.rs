@@ -110,7 +110,7 @@ pub struct Location {
     /// See [`Window::cursor_position`].
     ///
     /// [`Window::cursor_position`]: https://docs.rs/bevy/0.13.0/bevy/window/struct.Window.html#method.cursor_position
-    pub window_position: Vec2,
+    pub position: Vec2,
 
     /// The entity id of the window that contains the cursor.
     pub window: Entity,
@@ -124,7 +124,7 @@ pub struct Location {
     ///
     /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
     #[cfg(feature = "2d")]
-    pub position: Vec2,
+    pub world_position: Vec2,
 
     /// The [`Ray3d`] emitted by the cursor from the camera.
     ///
@@ -153,8 +153,8 @@ impl CursorLocation {
     ///
     /// [`Window::cursor_position`]: https://docs.rs/bevy/0.13.0/bevy/window/struct.Window.html#method.cursor_position
     #[inline]
-    pub fn window_position(&self) -> Option<Vec2> {
-        self.get().map(|data| data.window_position)
+    pub fn position(&self) -> Option<Vec2> {
+        self.get().map(|data| data.position)
     }
 
     /// The entity id of the window that contains the cursor.
@@ -182,8 +182,8 @@ impl CursorLocation {
     /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
     #[cfg(feature = "2d")]
     #[inline]
-    pub fn position(&self) -> Option<Vec2> {
-        self.get().map(|data| data.position)
+    pub fn world_position(&self) -> Option<Vec2> {
+        self.get().map(|data| data.world_position)
     }
 
     /// The [`Ray3d`] emitted by the cursor from the camera.
@@ -255,7 +255,7 @@ fn update_cursor_location_res(
             }
 
             #[cfg(feature = "2d")]
-            let Some(position) = camera.viewport_to_world_2d(cam_t, cursor_position) else {
+            let Some(world_position) = camera.viewport_to_world_2d(cam_t, cursor_position) else {
                 continue;
             };
 
@@ -265,12 +265,12 @@ fn update_cursor_location_res(
             };
 
             cursor.set_if_neq(Some(Location {
-                window_position: cursor_position,
+                position: cursor_position,
                 window: win_ref,
                 camera: camera_ref,
 
                 #[cfg(feature = "2d")]
-                position,
+                world_position,
 
                 #[cfg(feature = "3d")]
                 ray,
