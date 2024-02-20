@@ -145,33 +145,6 @@ impl CursorLocation {
         self.0.as_ref()
     }
 
-    /// The position of the cursor in the world coordinates.
-    ///
-    /// This value is computed with [`Camera::viewport_to_world_2d`].
-    ///
-    /// Returns [`None`] if the cursor is outside any window area.
-    ///
-    /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
-    #[cfg(feature = "2d")]
-    #[inline]
-    pub fn position(&self) -> Option<Vec2> {
-        self.get().map(|data| data.position)
-    }
-
-    /// The [`Ray3d`] emitted by the cursor from the camera.
-    ///
-    /// This value is computed with [`Camera::viewport_to_world`].
-    ///
-    /// Returns [`None`] if the cursor is outside any window area.
-    ///
-    /// [`Ray3d`]: https://docs.rs/bevy/0.13.0/bevy/math/struct.Ray3d.html
-    /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
-    #[cfg(feature = "3d")]
-    #[inline]
-    pub fn ray(&self) -> Option<Ray3d> {
-        self.get().map(|data| data.ray)
-    }
-
     /// The cursor position in the window in logical pixels.
     ///
     /// See [`Window::cursor_position`].
@@ -198,6 +171,33 @@ impl CursorLocation {
     #[inline]
     pub fn camera(&self) -> Option<Entity> {
         self.get().map(|data| data.camera)
+    }
+
+    /// The position of the cursor in the world coordinates.
+    ///
+    /// This value is computed with [`Camera::viewport_to_world_2d`].
+    ///
+    /// Returns [`None`] if the cursor is outside any window area.
+    ///
+    /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
+    #[cfg(feature = "2d")]
+    #[inline]
+    pub fn position(&self) -> Option<Vec2> {
+        self.get().map(|data| data.position)
+    }
+
+    /// The [`Ray3d`] emitted by the cursor from the camera.
+    ///
+    /// This value is computed with [`Camera::viewport_to_world`].
+    ///
+    /// Returns [`None`] if the cursor is outside any window area.
+    ///
+    /// [`Ray3d`]: https://docs.rs/bevy/0.13.0/bevy/math/struct.Ray3d.html
+    /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
+    #[cfg(feature = "3d")]
+    #[inline]
+    pub fn ray(&self) -> Option<Ray3d> {
+        self.get().map(|data| data.ray)
     }
 }
 
