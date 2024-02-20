@@ -36,6 +36,8 @@ pub mod prelude {
 /* -------------------------------------------------------------------------- */
 
 /// This plugin adds support to track the cursor's position, window, and camera.
+///
+/// Those values are provided by the [`CursorLocation`] resource.
 pub struct TrackCursorPlugin;
 
 impl Plugin for TrackCursorPlugin {
@@ -77,7 +79,10 @@ pub struct UpdateCursorLocation;
 
 /* -------------------------------------------------------------------------- */
 
-/// A resource that provides information about the cursor.
+/// A resource that provides the [`Location`] data of the cursor.
+///
+/// The [`Location`] is available only if the cursor is currently inside one
+/// of the windows area.
 ///
 /// # Example
 ///
@@ -97,26 +102,9 @@ pub struct UpdateCursorLocation;
 #[derive(Resource, Default)]
 pub struct CursorLocation(Option<Location>);
 
-/// Information about the location of the cursor (its position, window, and camera).
+/// The location of the cursor (its position, window, and camera).
 #[derive(Debug, Clone, PartialEq)]
 pub struct Location {
-    /// The position of the cursor in the world.
-    ///
-    /// See [`Camera::viewport_to_world_2d`].
-    ///
-    /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
-    #[cfg(feature = "2d")]
-    pub position: Vec2,
-
-    /// The [`Ray3d`] emitted by the cursor from the camera.
-    ///
-    /// See [`Camera::viewport_to_world`].
-    ///
-    /// [`Ray3d`]: https://docs.rs/bevy/0.13.0/bevy/math/struct.Ray3d.html
-    /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
-    #[cfg(feature = "3d")]
-    pub ray: Ray3d,
-
     /// The cursor position in the window in logical pixels.
     ///
     /// See [`Window::cursor_position`].
@@ -129,22 +117,67 @@ pub struct Location {
 
     /// The entity id of the camera used to compute the world position of the cursor.
     pub camera: Entity,
+
+    /// The position of the cursor in the world coordinates.
+    ///
+    /// This value is computed with [`Camera::viewport_to_world_2d`].
+    ///
+    /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
+    #[cfg(feature = "2d")]
+    pub position: Vec2,
+
+    /// The [`Ray3d`] emitted by the cursor from the camera.
+    ///
+    /// This value is computed with [`Camera::viewport_to_world`].
+    ///
+    /// [`Ray3d`]: https://docs.rs/bevy/0.13.0/bevy/math/struct.Ray3d.html
+    /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
+    #[cfg(feature = "3d")]
+    pub ray: Ray3d,
 }
 
 impl CursorLocation {
-    /// The information about the cursor.
+    /// The [`Location`] of the cursor.
     ///
-    /// The value is `None` if the cursor is not in any window.
+    /// Returns [`None`] if the cursor is outside any window area.
     #[inline]
     pub fn get(&self) -> Option<&Location> {
         self.0.as_ref()
     }
 
-    /// The position of the cursor in the world.
+    /// The cursor position in the window in logical pixels.
     ///
-    /// See [`Camera::viewport_to_world_2d`].
+    /// See [`Window::cursor_position`].
     ///
-    /// The value is `None` if the cursor is not in any window.
+    /// Returns [`None`] if the cursor is outside any window area.
+    ///
+    /// [`Window::cursor_position`]: https://docs.rs/bevy/0.13.0/bevy/window/struct.Window.html#method.cursor_position
+    #[inline]
+    pub fn window_position(&self) -> Option<Vec2> {
+        self.get().map(|data| data.window_position)
+    }
+
+    /// The entity id of the window that contains the cursor.
+    ///
+    /// Returns [`None`] if the cursor is outside any window area.
+    #[inline]
+    pub fn window(&self) -> Option<Entity> {
+        self.get().map(|data| data.window)
+    }
+
+    /// The entity id of the camera used to compute the world position of the cursor.
+    ///
+    /// Returns [`None`] if the cursor is outside any window area.
+    #[inline]
+    pub fn camera(&self) -> Option<Entity> {
+        self.get().map(|data| data.camera)
+    }
+
+    /// The position of the cursor in the world coordinates.
+    ///
+    /// This value is computed with [`Camera::viewport_to_world_2d`].
+    ///
+    /// Returns [`None`] if the cursor is outside any window area.
     ///
     /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
     #[cfg(feature = "2d")]
@@ -155,9 +188,9 @@ impl CursorLocation {
 
     /// The [`Ray3d`] emitted by the cursor from the camera.
     ///
-    /// See [`Camera::viewport_to_world`].
+    /// This value is computed with [`Camera::viewport_to_world`].
     ///
-    /// The value is `None` if the cursor is not in any window.
+    /// Returns [`None`] if the cursor is outside any window area.
     ///
     /// [`Ray3d`]: https://docs.rs/bevy/0.13.0/bevy/math/struct.Ray3d.html
     /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
@@ -165,34 +198,6 @@ impl CursorLocation {
     #[inline]
     pub fn ray(&self) -> Option<Ray3d> {
         self.get().map(|data| data.ray)
-    }
-
-    /// The cursor position in the window in logical pixels.
-    ///
-    /// See [`Window::cursor_position`].
-    ///
-    /// The value is `None` if the cursor is not in any window.
-    ///
-    /// [`Window::cursor_position`]: https://docs.rs/bevy/0.13.0/bevy/window/struct.Window.html#method.cursor_position
-    #[inline]
-    pub fn window_position(&self) -> Option<Vec2> {
-        self.get().map(|data| data.window_position)
-    }
-
-    /// The entity id of the window that contains the cursor.
-    ///
-    /// The value is `None` if the cursor is not in any window.
-    #[inline]
-    pub fn window(&self) -> Option<Entity> {
-        self.get().map(|data| data.window)
-    }
-
-    /// The entity id of the camera used to compute the world position of the cursor.
-    ///
-    /// The value is `None` if the cursor is not in any window.
-    #[inline]
-    pub fn camera(&self) -> Option<Entity> {
-        self.get().map(|data| data.camera)
     }
 }
 
@@ -260,15 +265,15 @@ fn update_cursor_location_res(
             };
 
             cursor.set_if_neq(Some(Location {
+                window_position: cursor_position,
+                window: win_ref,
+                camera: camera_ref,
+
                 #[cfg(feature = "2d")]
                 position,
 
                 #[cfg(feature = "3d")]
                 ray,
-
-                window_position: cursor_position,
-                window: win_ref,
-                camera: camera_ref,
             }));
 
             // We found the correct window and camera, we can stop here.
