@@ -110,7 +110,7 @@ pub struct Location {
     /// See [`Window::cursor_position`].
     ///
     /// [`Window::cursor_position`]: https://docs.rs/bevy/0.13.0/bevy/window/struct.Window.html#method.cursor_position
-    pub window_position: Vec2,
+    pub position: Vec2,
 
     /// The entity id of the window that contains the cursor.
     pub window: Entity,
@@ -153,8 +153,8 @@ impl CursorLocation {
     ///
     /// [`Window::cursor_position`]: https://docs.rs/bevy/0.13.0/bevy/window/struct.Window.html#method.cursor_position
     #[inline]
-    pub fn window_position(&self) -> Option<Vec2> {
-        self.get().map(|data| data.window_position)
+    pub fn position(&self) -> Option<Vec2> {
+        self.get().map(|data| data.position)
     }
 
     /// The entity id of the window that contains the cursor.
@@ -265,7 +265,7 @@ fn update_cursor_location_res(
             };
 
             cursor.set_if_neq(Some(Location {
-                window_position: cursor_position,
+                position: cursor_position,
                 window: win_ref,
                 camera: camera_ref,
 
