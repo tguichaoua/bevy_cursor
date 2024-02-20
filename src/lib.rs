@@ -97,7 +97,7 @@ pub struct UpdateCursorLocation;
 #[derive(Resource, Default)]
 pub struct CursorLocation(Option<Location>);
 
-/// Information about the location of the cursor (its position, window and camera).
+/// Information about the location of the cursor (its position, window, and camera).
 #[derive(Debug, Clone, PartialEq)]
 pub struct Location {
     /// The position of the cursor in the world.
