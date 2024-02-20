@@ -7,7 +7,7 @@ fn main() {
     App::new()
         .add_plugins((DefaultPlugins, TrackCursorPlugin))
         .add_systems(Startup, setup)
-        .add_systems(Update, print_cursor_position)
+        .add_systems(Update, print_cursor_location)
         .run();
 }
 
@@ -16,7 +16,7 @@ fn setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 }
 
-fn print_cursor_position(cursor: Res<CursorLocation>) {
+fn print_cursor_location(cursor: Res<CursorLocation>) {
     if let Some(position) = cursor.position() {
         info!("Cursor position: {position:?}");
     } else {

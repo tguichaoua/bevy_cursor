@@ -25,7 +25,7 @@ fn main() {
         .add_systems(Update, set_camera_viewports)
         .add_systems(
             Update,
-            print_cursor_data.run_if(resource_changed::<CursorLocation>),
+            print_cursor_location.run_if(resource_changed::<CursorLocation>),
         )
         .run();
 }
@@ -294,9 +294,9 @@ fn set_camera_viewports(
 
 // =============================================================================
 
-/// Update the texts with the cursor information.
+/// Update the texts with the cursor location data.
 #[allow(clippy::type_complexity)]
-fn print_cursor_data(
+fn print_cursor_location(
     cursor: Res<CursorLocation>,
 
     mut set: ParamSet<(
