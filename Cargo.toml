@@ -49,7 +49,6 @@ rustdoc-args = ["--cfg", "docsrs"]
 
 [[example]]
 name = "basic"
-required-features = ["2d"]
 
 [[example]]
 name = "multiple_windows"
