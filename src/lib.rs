@@ -49,7 +49,7 @@ impl Plugin for TrackCursorPlugin {
 
 /* -------------------------------------------------------------------------- */
 
-/// A [`SystemSet`] in which [`CursorLocation`] is updated.
+/// A [`SystemSet`] in which [`CursorLocation`] is updated during the [`First`] schedule.
 ///
 /// # Example
 ///
@@ -60,17 +60,18 @@ impl Plugin for TrackCursorPlugin {
 ///
 /// impl Plugin for MyPlugin {
 ///     fn build(&self, app: &mut App) {
-///         app.add_systems(First, foo.after(UpdateCursorLocation));
+///         app.add_systems(First, print_cursor_location.after(UpdateCursorLocation));
 ///     }
 /// }
 ///
 /// // Runs just after `CursorLocation` has been updated.
-/// fn foo(cursor: Res<CursorLocation>) {
+/// fn print_cursor_location(cursor: Res<CursorLocation>) {
 ///     /* ... */
 /// }
 /// ```
 ///
 /// [`SystemSet`]: https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/trait.SystemSet.html
+/// [`First`]: https://docs.rs/bevy/0.13.0/bevy/app/struct.First.html
 #[derive(SystemSet, Hash, Debug, PartialEq, Eq, Clone, Copy)]
 pub struct UpdateCursorLocation;
 
