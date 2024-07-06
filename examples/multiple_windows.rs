@@ -1,5 +1,6 @@
 //! An example using two windows with multiple camera per window.
 
+use bevy::color::palettes;
 use bevy::prelude::*;
 use bevy::render::camera::{RenderTarget, Viewport};
 use bevy::window::{ExitCondition, WindowRef, WindowResized};
@@ -115,7 +116,7 @@ fn setup(mut commands: Commands) {
         commands.spawn(SpriteBundle {
             transform: Transform::from_xyz(1000.0, 0.0, -1.0),
             sprite: Sprite {
-                color: Color::VIOLET,
+                color: palettes::css::VIOLET.into(),
                 custom_size: Some(Vec2::splat(1000.0)),
                 ..default()
             },
@@ -157,7 +158,7 @@ fn setup(mut commands: Commands) {
         commands.spawn(SpriteBundle {
             transform: Transform::from_xyz(2000.0, 0.0, -1.0),
             sprite: Sprite {
-                color: Color::GREEN,
+                color: palettes::css::LIME.into(),
                 custom_size: Some(Vec2::splat(1000.0)),
                 ..default()
             },
@@ -190,7 +191,7 @@ fn setup(mut commands: Commands) {
                     ),
                     TextSection::from_style(TextStyle {
                         font_size: FONT_SIZE,
-                        color: Color::GOLD,
+                        color: palettes::css::GOLD.into(),
                         ..default()
                     }),
                 ]),
@@ -209,7 +210,7 @@ fn setup(mut commands: Commands) {
                     ),
                     TextSection::from_style(TextStyle {
                         font_size: FONT_SIZE,
-                        color: Color::GOLD,
+                        color: palettes::css::GOLD.into(),
                         ..default()
                     }),
                 ]),
@@ -228,7 +229,7 @@ fn setup(mut commands: Commands) {
                     ),
                     TextSection::from_style(TextStyle {
                         font_size: FONT_SIZE,
-                        color: Color::GOLD,
+                        color: palettes::css::GOLD.into(),
                         ..default()
                     }),
                 ]),
@@ -247,7 +248,7 @@ fn setup(mut commands: Commands) {
                     ),
                     TextSection::from_style(TextStyle {
                         font_size: FONT_SIZE,
-                        color: Color::GOLD,
+                        color: palettes::css::GOLD.into(),
                         ..default()
                     }),
                 ]),
