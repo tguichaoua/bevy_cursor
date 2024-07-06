@@ -168,7 +168,7 @@ fn setup(mut commands: Commands) {
 
     // Spawn ui texts
 
-    const FONT_SIZE: f32 = 30.0;
+    const FONT_SIZE: f32 = 20.0;
 
     commands
         .spawn(NodeBundle {
