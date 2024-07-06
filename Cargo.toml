@@ -21,14 +21,14 @@ exclude = [".github/", "assets/"]
 # ---------------------------------------------------------------------------- #
 
 [dependencies]
-bevy = { version = "0.13.0", default-features = false, features = [
+bevy = { version = "0.14.0", default-features = false, features = [
     "bevy_render",
 ] }
 smallvec = { version = "1.11.0", features = ["union"] }
 
 
 [dev-dependencies]
-bevy = { version = "0.13.0", default-features = false, features = [
+bevy = { version = "0.14.0", default-features = false, features = [
     "bevy_ui",
     "bevy_winit",
     "default_font",
@@ -67,6 +67,5 @@ manual_let_else = "warn"
 redundant_else = "warn"
 match_same_arms = "warn"
 semicolon_if_nothing_returned = "warn"
-
 
 # ---------------------------------------------------------------------------- #
