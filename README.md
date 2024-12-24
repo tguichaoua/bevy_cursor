@@ -54,10 +54,11 @@ fn print_cursor_position(cursor: Res<CursorLocation>) {
 
 | bevy | bevy_cursor |
 | ---- | ----------- |
+| 0.15 | 0.5         |
 | 0.14 | 0.4         |
 | 0.13 | 0.3         |
 | 0.12 | 0.2         |
 | 0.11 | 0.1         |
 
 [`bevy`]: https://github.com/bevyengine/bevy
-[ray]: https://docs.rs/bevy/0.14.0/bevy/math/struct.Ray3d.html
+[ray]: https://docs.rs/bevy/0.15.0/bevy/math/struct.Ray3d.html
