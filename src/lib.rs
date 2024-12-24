@@ -256,12 +256,12 @@ fn update_cursor_location_res(
             }
 
             #[cfg(feature = "2d")]
-            let Some(world_position) = camera.viewport_to_world_2d(cam_t, cursor_position) else {
+            let Ok(world_position) = camera.viewport_to_world_2d(cam_t, cursor_position) else {
                 continue;
             };
 
             #[cfg(feature = "3d")]
-            let Some(ray) = camera.viewport_to_world(cam_t, cursor_position) else {
+            let Ok(ray) = camera.viewport_to_world(cam_t, cursor_position) else {
                 continue;
             };
 
