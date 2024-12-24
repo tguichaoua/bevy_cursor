@@ -12,14 +12,15 @@
 //!
 //! | bevy | bevy_cursor |
 //! | ---- | ----------- |
+//! | 0.15 | 0.5         |
 //! | 0.14 | 0.4         |
 //! | 0.13 | 0.3         |
 //! | 0.12 | 0.2         |
 //! | 0.11 | 0.1         |
 //!
 //! [`bevy`]: https://github.com/bevyengine/bevy
-//! [entity id]: https://docs.rs/bevy/0.14.0/bevy/ecs/entity/struct.Entity.html
-//! [ray]: https://docs.rs/bevy/0.14.0/bevy/math/struct.Ray3d.html
+//! [entity id]: https://docs.rs/bevy/0.15.0/bevy/ecs/entity/struct.Entity.html
+//! [ray]: https://docs.rs/bevy/0.15.0/bevy/math/struct.Ray3d.html
 
 use bevy::ecs::query::Has;
 use bevy::prelude::*;
@@ -73,8 +74,8 @@ impl Plugin for TrackCursorPlugin {
 /// }
 /// ```
 ///
-/// [`SystemSet`]: https://docs.rs/bevy/0.14.0/bevy/ecs/schedule/trait.SystemSet.html
-/// [`First`]: https://docs.rs/bevy/0.14.0/bevy/app/struct.First.html
+/// [`SystemSet`]: https://docs.rs/bevy/0.15.0/bevy/ecs/schedule/trait.SystemSet.html
+/// [`First`]: https://docs.rs/bevy/0.15.0/bevy/app/struct.First.html
 #[derive(SystemSet, Hash, Debug, PartialEq, Eq, Clone, Copy)]
 pub struct UpdateCursorLocation;
 
@@ -110,7 +111,7 @@ pub struct Location {
     ///
     /// See [`Window::cursor_position`].
     ///
-    /// [`Window::cursor_position`]: https://docs.rs/bevy/0.14.0/bevy/window/struct.Window.html#method.cursor_position
+    /// [`Window::cursor_position`]: https://docs.rs/bevy/0.15.0/bevy/window/struct.Window.html#method.cursor_position
     pub position: Vec2,
 
     /// The entity id of the window that contains the cursor.
@@ -123,7 +124,7 @@ pub struct Location {
     ///
     /// This value is computed with [`Camera::viewport_to_world_2d`].
     ///
-    /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.14.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
+    /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.15.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
     #[cfg(feature = "2d")]
     pub world_position: Vec2,
 
@@ -131,8 +132,8 @@ pub struct Location {
     ///
     /// This value is computed with [`Camera::viewport_to_world`].
     ///
-    /// [`Ray3d`]: https://docs.rs/bevy/0.14.0/bevy/math/struct.Ray3d.html
-    /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.14.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
+    /// [`Ray3d`]: https://docs.rs/bevy/0.15.0/bevy/math/struct.Ray3d.html
+    /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.15.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
     #[cfg(feature = "3d")]
     pub ray: Ray3d,
 }
@@ -152,7 +153,7 @@ impl CursorLocation {
     ///
     /// Returns [`None`] if the cursor is outside any window area.
     ///
-    /// [`Window::cursor_position`]: https://docs.rs/bevy/0.14.0/bevy/window/struct.Window.html#method.cursor_position
+    /// [`Window::cursor_position`]: https://docs.rs/bevy/0.15.0/bevy/window/struct.Window.html#method.cursor_position
     #[inline]
     pub fn position(&self) -> Option<Vec2> {
         self.get().map(|data| data.position)
@@ -180,7 +181,7 @@ impl CursorLocation {
     ///
     /// Returns [`None`] if the cursor is outside any window area.
     ///
-    /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.14.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
+    /// [`Camera::viewport_to_world_2d`]: https://docs.rs/bevy/0.15.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world_2d
     #[cfg(feature = "2d")]
     #[inline]
     pub fn world_position(&self) -> Option<Vec2> {
@@ -193,8 +194,8 @@ impl CursorLocation {
     ///
     /// Returns [`None`] if the cursor is outside any window area.
     ///
-    /// [`Ray3d`]: https://docs.rs/bevy/0.14.0/bevy/math/struct.Ray3d.html
-    /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.14.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
+    /// [`Ray3d`]: https://docs.rs/bevy/0.15.0/bevy/math/struct.Ray3d.html
+    /// [`Camera::viewport_to_world`]: https://docs.rs/bevy/0.15.0/bevy/render/camera/struct.Camera.html#method.viewport_to_world
     #[cfg(feature = "3d")]
     #[inline]
     pub fn ray(&self) -> Option<Ray3d> {
@@ -256,12 +257,12 @@ fn update_cursor_location_res(
             }
 
             #[cfg(feature = "2d")]
-            let Some(world_position) = camera.viewport_to_world_2d(cam_t, cursor_position) else {
+            let Ok(world_position) = camera.viewport_to_world_2d(cam_t, cursor_position) else {
                 continue;
             };
 
             #[cfg(feature = "3d")]
-            let Some(ray) = camera.viewport_to_world(cam_t, cursor_position) else {
+            let Ok(ray) = camera.viewport_to_world(cam_t, cursor_position) else {
                 continue;
             };
 

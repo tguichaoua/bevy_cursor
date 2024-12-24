@@ -49,28 +49,19 @@ struct RightCamera;
 #[derive(Component)]
 struct SecondaryWindow;
 
-// A bunch of marker components to identify each text.
-
-#[derive(Component)]
-struct TextWindow;
-
-#[derive(Component)]
-struct TextCamera;
-
-#[derive(Component)]
-struct TextWindowPosition;
-
-#[derive(Component)]
-struct TextWorldPosition;
+#[derive(Resource)]
+struct TextEntities {
+    window: Entity,
+    camera: Entity,
+    window_position: Entity,
+    world_position: Entity,
+}
 
 // =============================================================================
 
 fn setup(mut commands: Commands) {
     // Spawn a camera to render to the primary window.
-    commands.spawn((
-        Camera2dBundle::default(),
-        Name(String::from("The default one")),
-    ));
+    commands.spawn((Camera2d, Name(String::from("The default one"))));
 
     // Spawn a second window and two other cameras to render into.
 
@@ -88,173 +79,141 @@ fn setup(mut commands: Commands) {
     // The left camera
     {
         commands.spawn((
-            Camera2dBundle {
-                transform: Transform::from_xyz(1000.0, 0.0, 0.0),
-                camera: Camera {
-                    target: RenderTarget::Window(WindowRef::Entity(secondary_window_ref)),
-                    ..default()
-                },
+            Camera2d,
+            Transform::from_xyz(1000.0, 0.0, 0.0),
+            Camera {
+                target: RenderTarget::Window(WindowRef::Entity(secondary_window_ref)),
                 ..default()
             },
             Name(String::from("The left one")),
             LeftCamera,
         ));
 
-        commands.spawn(Text2dBundle {
-            transform: Transform::from_xyz(1000.0, 0.0, 0.0),
-            text: Text::from_section(
-                "Left",
-                TextStyle {
-                    font_size: 40.0,
-                    color: Color::WHITE,
-                    ..default()
-                },
-            ),
-            ..default()
-        });
+        commands.spawn((
+            Transform::from_xyz(1000.0, 0.0, 0.0),
+            Text2d::new("Left"),
+            TextFont {
+                font_size: 40.0,
+                ..default()
+            },
+            TextColor::WHITE,
+        ));
 
-        commands.spawn(SpriteBundle {
-            transform: Transform::from_xyz(1000.0, 0.0, -1.0),
-            sprite: Sprite {
+        commands.spawn((
+            Sprite {
                 color: palettes::css::VIOLET.into(),
                 custom_size: Some(Vec2::splat(1000.0)),
                 ..default()
             },
-            ..default()
-        });
+            Transform::from_xyz(1000.0, 0.0, -1.0),
+        ));
     }
 
     // The right camera
     {
         commands.spawn((
-            Camera2dBundle {
-                transform: Transform::from_xyz(2000.0, 0.0, 0.0),
-                camera: Camera {
-                    target: RenderTarget::Window(WindowRef::Entity(secondary_window_ref)),
-                    order: 1,
-                    // don't clear on the second camera because the first camera already cleared the window
-                    clear_color: ClearColorConfig::None,
-                    ..default()
-                },
+            Camera2d,
+            Transform::from_xyz(2000.0, 0.0, 0.0),
+            Camera {
+                target: RenderTarget::Window(WindowRef::Entity(secondary_window_ref)),
+                order: 1,
+                // don't clear on the second camera because the first camera already cleared the window
+                clear_color: ClearColorConfig::None,
                 ..default()
             },
             Name(String::from("The right one")),
             RightCamera,
         ));
 
-        commands.spawn(Text2dBundle {
-            transform: Transform::from_xyz(2000.0, 0.0, 0.0),
-            text: Text::from_section(
-                "Right",
-                TextStyle {
-                    font_size: 40.0,
-                    color: Color::WHITE,
-                    ..default()
-                },
-            ),
-            ..default()
-        });
+        commands.spawn((
+            Transform::from_xyz(2000.0, 0.0, 0.0),
+            Text2d::new("Right"),
+            TextFont {
+                font_size: 40.0,
+                ..default()
+            },
+            TextColor::WHITE,
+        ));
 
-        commands.spawn(SpriteBundle {
-            transform: Transform::from_xyz(2000.0, 0.0, -1.0),
-            sprite: Sprite {
+        commands.spawn((
+            Sprite {
                 color: palettes::css::LIME.into(),
                 custom_size: Some(Vec2::splat(1000.0)),
                 ..default()
             },
-            ..default()
-        });
+            Transform::from_xyz(2000.0, 0.0, -1.0),
+        ));
     }
 
     // Spawn ui texts
 
     const FONT_SIZE: f32 = 20.0;
 
+    let mut text_entities = None;
+
     commands
-        .spawn(NodeBundle {
-            style: Style {
-                flex_direction: FlexDirection::Column,
-                ..default()
-            },
+        .spawn(Node {
+            flex_direction: FlexDirection::Column,
             ..default()
         })
         .with_children(|parent| {
-            parent.spawn((
-                TextBundle::from_sections([
-                    TextSection::new(
-                        "Window: ",
-                        TextStyle {
-                            font_size: FONT_SIZE,
-                            color: Color::WHITE,
-                            ..default()
-                        },
-                    ),
-                    TextSection::from_style(TextStyle {
+            let window = parent
+                .spawn(Text::new("Windows: "))
+                .with_child((
+                    TextSpan::default(),
+                    TextFont {
                         font_size: FONT_SIZE,
-                        color: palettes::css::GOLD.into(),
                         ..default()
-                    }),
-                ]),
-                TextWindow,
-            ));
+                    },
+                    TextColor(palettes::css::GOLD.into()),
+                ))
+                .id();
 
-            parent.spawn((
-                TextBundle::from_sections([
-                    TextSection::new(
-                        "Camera: ",
-                        TextStyle {
-                            font_size: FONT_SIZE,
-                            color: Color::WHITE,
-                            ..default()
-                        },
-                    ),
-                    TextSection::from_style(TextStyle {
+            let camera = parent
+                .spawn(Text::new("Camera: "))
+                .with_child((
+                    TextSpan::default(),
+                    TextFont {
                         font_size: FONT_SIZE,
-                        color: palettes::css::GOLD.into(),
                         ..default()
-                    }),
-                ]),
-                TextCamera,
-            ));
+                    },
+                    TextColor(palettes::css::GOLD.into()),
+                ))
+                .id();
 
-            parent.spawn((
-                TextBundle::from_sections([
-                    TextSection::new(
-                        "Window position: ",
-                        TextStyle {
-                            font_size: FONT_SIZE,
-                            color: Color::WHITE,
-                            ..default()
-                        },
-                    ),
-                    TextSection::from_style(TextStyle {
+            let window_position = parent
+                .spawn(Text::new("Window position: "))
+                .with_child((
+                    TextSpan::default(),
+                    TextFont {
                         font_size: FONT_SIZE,
-                        color: palettes::css::GOLD.into(),
                         ..default()
-                    }),
-                ]),
-                TextWindowPosition,
-            ));
+                    },
+                    TextColor(palettes::css::GOLD.into()),
+                ))
+                .id();
 
-            parent.spawn((
-                TextBundle::from_sections([
-                    TextSection::new(
-                        "World Position: ",
-                        TextStyle {
-                            font_size: FONT_SIZE,
-                            color: Color::WHITE,
-                            ..default()
-                        },
-                    ),
-                    TextSection::from_style(TextStyle {
+            let world_position = parent
+                .spawn(Text::new("World Position: "))
+                .with_child((
+                    TextSpan::default(),
+                    TextFont {
                         font_size: FONT_SIZE,
-                        color: palettes::css::GOLD.into(),
                         ..default()
-                    }),
-                ]),
-                TextWorldPosition,
-            ));
+                    },
+                    TextColor(palettes::css::GOLD.into()),
+                ))
+                .id();
+
+            text_entities = Some(TextEntities {
+                window,
+                camera,
+                window_position,
+                world_position,
+            });
         });
+
+    commands.insert_resource(text_entities.unwrap());
 }
 
 // =============================================================================
@@ -300,46 +259,31 @@ fn set_camera_viewports(
 fn print_cursor_location(
     cursor: Res<CursorLocation>,
 
-    mut set: ParamSet<(
-        Query<&mut Text, With<TextWindow>>,
-        Query<&mut Text, With<TextCamera>>,
-        Query<&mut Text, With<TextWindowPosition>>,
-        Query<&mut Text, With<TextWorldPosition>>,
-    )>,
+    mut text_writer: TextUiWriter,
+    text_entities: Res<TextEntities>,
 
     window_q: Query<&Window>,
     name_q: Query<&Name>,
 ) {
     // A closure that update the `Text`s' value.
     let mut set_texts = |window_str, camera_str, viewport_str, world_pos_str| {
-        let mut window_text_q = set.p0();
-        let mut window_text = window_text_q.single_mut();
-        window_text.sections[1].value = window_str;
-
-        let mut camera_text_q = set.p1();
-        let mut camera_text = camera_text_q.single_mut();
-        camera_text.sections[1].value = camera_str;
-
-        let mut viewport_position_text_q = set.p2();
-        let mut viewport_position_text = viewport_position_text_q.single_mut();
-        viewport_position_text.sections[1].value = viewport_str;
-
-        let mut world_position_text_q = set.p3();
-        let mut world_position_text = world_position_text_q.single_mut();
-        world_position_text.sections[1].value = world_pos_str;
+        *text_writer.text(text_entities.window, 1) = window_str;
+        *text_writer.text(text_entities.camera, 1) = camera_str;
+        *text_writer.text(text_entities.window_position, 1) = viewport_str;
+        *text_writer.text(text_entities.world_position, 1) = world_pos_str;
     };
 
     if let Some(cursor) = cursor.get() {
         set_texts(
             format!(
-                "{:?} {:?}",
+                "{:?} ({:?})",
+                window_q.get(cursor.window).unwrap().title,
                 cursor.window,
-                window_q.get(cursor.window).unwrap().title
             ),
             format!(
-                "{:?} {:?}",
+                "{:?} ({:?})",
+                name_q.get(cursor.camera).unwrap().0,
                 cursor.camera,
-                name_q.get(cursor.camera).unwrap().0
             ),
             cursor.position.to_string(),
             cursor.world_position.to_string(),
