@@ -33,7 +33,7 @@ fn main() {
 
 fn setup(mut commands: Commands) {
     // A camera is required to compute the world position of the cursor
-    commands.spawn(Camera2dBundle::default());
+    commands.spawn(Camera2d);
 }
 
 fn print_cursor_position(cursor: Res<CursorLocation>) {
