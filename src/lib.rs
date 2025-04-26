@@ -236,8 +236,7 @@ fn update_cursor_location_res(
 
         // Cameras with a higher order are rendered later, and thus on top of lower order cameras.
         // We want to handle them first.
-        cameras.sort_unstable_by_key(|&(_, _, camera)| camera.order);
-        let cameras = cameras.into_iter().rev();
+        cameras.sort_unstable_by_key(|(_, _, camera)| std::cmp::Reverse(camera.order));
 
         for (camera_ref, cam_t, camera) in cameras {
             let _ = cam_t; // Note: disable the `unused_variables` warning in no-default-feature.
