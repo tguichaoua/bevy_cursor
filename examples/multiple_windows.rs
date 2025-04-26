@@ -57,14 +57,19 @@ struct TextEntities {
     world_position: Entity,
 }
 
+impl Name {
+    fn new(name: impl Into<String>) -> Self {
+        Self(name.into())
+    }
+}
+
 // =============================================================================
 
 fn setup(mut commands: Commands) {
     // Spawn a camera to render to the primary window.
-    commands.spawn((Camera2d, Name(String::from("The default one"))));
+    commands.spawn((Camera2d, Name::new("The default one")));
 
     // Spawn a second window and two other cameras to render into.
-
     let secondary_window_ref = commands
         .spawn((
             Window {
@@ -85,7 +90,7 @@ fn setup(mut commands: Commands) {
                 target: RenderTarget::Window(WindowRef::Entity(secondary_window_ref)),
                 ..default()
             },
-            Name(String::from("The left one")),
+            Name::new("The left one"),
             LeftCamera,
         ));
 
@@ -121,7 +126,7 @@ fn setup(mut commands: Commands) {
                 clear_color: ClearColorConfig::None,
                 ..default()
             },
-            Name(String::from("The right one")),
+            Name::new("The right one"),
             RightCamera,
         ));
 
@@ -146,74 +151,43 @@ fn setup(mut commands: Commands) {
     }
 
     // Spawn ui texts
+    {
+        let ui_root = commands
+            .spawn(Node {
+                flex_direction: FlexDirection::Column,
+                ..default()
+            })
+            .id();
 
-    const FONT_SIZE: f32 = 20.0;
-
-    let mut text_entities = None;
-
-    commands
-        .spawn(Node {
-            flex_direction: FlexDirection::Column,
-            ..default()
-        })
-        .with_children(|parent| {
-            let window = parent
-                .spawn(Text::new("Windows: "))
-                .with_child((
-                    TextSpan::default(),
-                    TextFont {
-                        font_size: FONT_SIZE,
-                        ..default()
-                    },
-                    TextColor(palettes::css::GOLD.into()),
+        let mut spawn_ui_text = |text: &str| {
+            commands
+                .spawn((
+                    ChildOf(ui_root),
+                    Text::new(text),
+                    children![(
+                        TextSpan::default(),
+                        TextFont {
+                            font_size: 20.0,
+                            ..default()
+                        },
+                        TextColor(palettes::css::GOLD.into()),
+                    )],
                 ))
-                .id();
+                .id()
+        };
 
-            let camera = parent
-                .spawn(Text::new("Camera: "))
-                .with_child((
-                    TextSpan::default(),
-                    TextFont {
-                        font_size: FONT_SIZE,
-                        ..default()
-                    },
-                    TextColor(palettes::css::GOLD.into()),
-                ))
-                .id();
+        let window = spawn_ui_text("Windows: ");
+        let camera = spawn_ui_text("Camera: ");
+        let window_position = spawn_ui_text("Window position: ");
+        let world_position = spawn_ui_text("World Position: ");
 
-            let window_position = parent
-                .spawn(Text::new("Window position: "))
-                .with_child((
-                    TextSpan::default(),
-                    TextFont {
-                        font_size: FONT_SIZE,
-                        ..default()
-                    },
-                    TextColor(palettes::css::GOLD.into()),
-                ))
-                .id();
-
-            let world_position = parent
-                .spawn(Text::new("World Position: "))
-                .with_child((
-                    TextSpan::default(),
-                    TextFont {
-                        font_size: FONT_SIZE,
-                        ..default()
-                    },
-                    TextColor(palettes::css::GOLD.into()),
-                ))
-                .id();
-
-            text_entities = Some(TextEntities {
-                window,
-                camera,
-                window_position,
-                world_position,
-            });
+        commands.insert_resource(TextEntities {
+            window,
+            camera,
+            window_position,
+            world_position,
         });
-
-    commands.insert_resource(text_entities.unwrap());
+    }
 }
 
 // =============================================================================
@@ -224,13 +198,13 @@ fn set_camera_viewports(
     mut resize_events: EventReader<WindowResized>,
     mut left_camera_q: Query<&mut Camera, (With<LeftCamera>, Without<RightCamera>)>,
     mut right_camera_q: Query<&mut Camera, With<RightCamera>>,
-) {
+) -> Result {
     for resize_event in resize_events.read() {
         let Ok(window) = secondary_window_q.get(resize_event.window) else {
             continue;
         };
 
-        let mut left_camera = left_camera_q.single_mut();
+        let mut left_camera = left_camera_q.single_mut()?;
         left_camera.viewport = Some(Viewport {
             physical_position: UVec2::new(0, 0),
             physical_size: UVec2::new(
@@ -240,7 +214,7 @@ fn set_camera_viewports(
             ..default()
         });
 
-        let mut right_camera = right_camera_q.single_mut();
+        let mut right_camera = right_camera_q.single_mut()?;
         right_camera.viewport = Some(Viewport {
             physical_position: UVec2::new(window.resolution.physical_width() / 2, 0),
             physical_size: UVec2::new(
@@ -250,12 +224,13 @@ fn set_camera_viewports(
             ..default()
         });
     }
+
+    Ok(())
 }
 
 // =============================================================================
 
 /// Update the texts with the cursor location data.
-#[allow(clippy::type_complexity)]
 fn print_cursor_location(
     cursor: Res<CursorLocation>,
 
@@ -264,7 +239,7 @@ fn print_cursor_location(
 
     window_q: Query<&Window>,
     name_q: Query<&Name>,
-) {
+) -> Result {
     // A closure that update the `Text`s' value.
     let mut set_texts = |window_str, camera_str, viewport_str, world_pos_str| {
         *text_writer.text(text_entities.window, 1) = window_str;
@@ -277,14 +252,10 @@ fn print_cursor_location(
         set_texts(
             format!(
                 "{:?} ({:?})",
-                window_q.get(cursor.window).unwrap().title,
+                window_q.get(cursor.window)?.title,
                 cursor.window,
             ),
-            format!(
-                "{:?} ({:?})",
-                name_q.get(cursor.camera).unwrap().0,
-                cursor.camera,
-            ),
+            format!("{:?} ({:?})", name_q.get(cursor.camera)?.0, cursor.camera,),
             cursor.position.to_string(),
             cursor.world_position.to_string(),
         );
@@ -296,4 +267,6 @@ fn print_cursor_location(
             String::default(),
         );
     }
+
+    Ok(())
 }
