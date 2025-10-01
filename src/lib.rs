@@ -23,9 +23,9 @@
 //! [entity id]: https://docs.rs/bevy/0.16.0/bevy/ecs/entity/struct.Entity.html
 //! [ray]: https://docs.rs/bevy/0.16.0/bevy/math/struct.Ray3d.html
 
+use bevy::camera::RenderTarget;
 use bevy::ecs::query::Has;
 use bevy::prelude::*;
-use bevy::render::camera::RenderTarget;
 use bevy::window::{PrimaryWindow, WindowRef};
 use smallvec::SmallVec;
 
@@ -229,7 +229,9 @@ fn update_cursor_location_res(
             .filter(|&(_, _, camera)| match camera.target {
                 RenderTarget::Window(WindowRef::Primary) => is_primary,
                 RenderTarget::Window(WindowRef::Entity(target_ref)) => target_ref == win_ref,
-                RenderTarget::Image(_) | RenderTarget::TextureView(_) => false,
+                RenderTarget::Image(_)
+                | RenderTarget::TextureView(_)
+                | RenderTarget::None { .. } => false,
             })
             // PERF: this is unlikely to have more than 4 cameras on the same window.
             .collect::<SmallVec<[_; 4]>>();
