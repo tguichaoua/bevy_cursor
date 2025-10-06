@@ -32,26 +32,13 @@ smallvec = { version = "1.11.0", features = ["union"] }
 bevy = { version = "0.17.0", default-features = false, features = [
     "std",
     "async_executor",
-    "bevy_anti_alias",
-    "bevy_camera",
-    "bevy_color",
-    "bevy_core_pipeline",
-    "bevy_input_focus",
     "bevy_log",
-    "bevy_post_process",
-    "bevy_render",
-    "bevy_sprite",
-    "bevy_sprite_render",
-    "bevy_state",
-    "bevy_text",
     "bevy_ui",
     "bevy_ui_render",
     "bevy_winit",
     "default_font",
     "png",
-    "bevy_sprite",
     "x11",
-    "wayland"
 ] }
 
 # ---------------------------------------------------------------------------- #
