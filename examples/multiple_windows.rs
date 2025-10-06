@@ -1,12 +1,12 @@
 //! An example using two windows with multiple camera per window.
 
+use bevy::camera::{RenderTarget, Viewport};
 use bevy::color::palettes;
 use bevy::prelude::*;
-use bevy::render::camera::{RenderTarget, Viewport};
 use bevy::window::{ExitCondition, WindowRef, WindowResized};
 use bevy_cursor::prelude::*;
 
-const WINDOW_SIZE: Vec2 = Vec2::new(600.0, 400.0);
+const WINDOW_SIZE: UVec2 = UVec2::new(600, 400);
 
 fn main() {
     App::new()
@@ -195,7 +195,7 @@ fn setup(mut commands: Commands) {
 /// Update the viewport of the cameras on the secondary window when this one is resized.
 fn set_camera_viewports(
     secondary_window_q: Query<&Window, With<SecondaryWindow>>,
-    mut resize_events: EventReader<WindowResized>,
+    mut resize_events: MessageReader<WindowResized>,
     mut left_camera_q: Query<&mut Camera, (With<LeftCamera>, Without<RightCamera>)>,
     mut right_camera_q: Query<&mut Camera, With<RightCamera>>,
 ) -> Result {
