@@ -29,7 +29,7 @@ smallvec = { version = "1.11.0", features = ["union"] }
 
 
 [dev-dependencies]
-bevy = { version = "0.17", default-features = false, features = [
+bevy = { version = "0.17.0", default-features = false, features = [
     "std",
     "async_executor",
     "bevy_anti_alias",
