@@ -21,7 +21,7 @@ exclude = [".github/", "assets/"]
 # ---------------------------------------------------------------------------- #
 
 [dependencies]
-bevy = { version = "0.17", default-features = false, features = [
+bevy = { version = "0.17.0", default-features = false, features = [
     "bevy_render",
     "bevy_window",
 ] }
