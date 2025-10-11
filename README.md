@@ -61,4 +61,4 @@ fn print_cursor_position(cursor: Res<CursorLocation>) {
 [Full compatibility table](https://github.com/tguichaoua/bevy_cursor/blob/main/Bevy.md)
 
 [`bevy`]: https://github.com/bevyengine/bevy
-[ray]: https://docs.rs/bevy/0.17.0/bevy/math/struct.Ray3d.html
+[ray]: https://docs.rs/bevy/0.17.2/bevy/math/struct.Ray3d.html
