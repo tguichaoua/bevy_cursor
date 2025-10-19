@@ -1,6 +1,6 @@
 [package]
 name = "bevy_cursor"
-version = "0.7.0"
+version = "0.8.0"
 edition = "2024"
 authors = ["Tristan Guichaoua <tguichaoua.dev@gmail.com>"]
 description = "A bevy plugin to track information about the cursor"
