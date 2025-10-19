@@ -55,3 +55,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo doc --all-features --no-deps --document-private-items
+
+  docsrs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - run: cargo +nightly doc --all-features --no-deps --document-private-items
+        env:
+          RUSTDOCFLAGS: --cfg docsrs
