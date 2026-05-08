@@ -86,10 +86,8 @@ fn setup(mut commands: Commands) {
         commands.spawn((
             Camera2d,
             Transform::from_xyz(1000.0, 0.0, 0.0),
-            Camera {
-                target: RenderTarget::Window(WindowRef::Entity(secondary_window_ref)),
-                ..default()
-            },
+            Camera::default(),
+            RenderTarget::Window(WindowRef::Entity(secondary_window_ref)),
             Name::new("The left one"),
             LeftCamera,
         ));
@@ -120,12 +118,12 @@ fn setup(mut commands: Commands) {
             Camera2d,
             Transform::from_xyz(2000.0, 0.0, 0.0),
             Camera {
-                target: RenderTarget::Window(WindowRef::Entity(secondary_window_ref)),
                 order: 1,
                 // don't clear on the second camera because the first camera already cleared the window
                 clear_color: ClearColorConfig::None,
                 ..default()
             },
+            RenderTarget::Window(WindowRef::Entity(secondary_window_ref)),
             Name::new("The right one"),
             RightCamera,
         ));

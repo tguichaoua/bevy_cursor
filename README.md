@@ -54,6 +54,7 @@ fn print_cursor_position(cursor: Res<CursorLocation>) {
 
 | `bevy` | `bevy_cursor` |
 | ------ | ------------- |
+| 0.18   | 0.8           |
 | 0.17   | 0.7           |
 | 0.16   | 0.6           |
 | 0.15   | 0.5           |

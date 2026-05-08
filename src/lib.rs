@@ -208,7 +208,7 @@ impl CursorLocation {
 /// Reads the current cursor position and update the [`CursorLocation`] resource.
 fn update_cursor_location_res(
     window_q: Query<(Entity, &Window, Has<PrimaryWindow>)>,
-    camera_q: Query<(Entity, &GlobalTransform, &Camera)>,
+    camera_q: Query<(Entity, &GlobalTransform, &Camera, &RenderTarget)>,
     cursor: ResMut<CursorLocation>,
 ) {
     let mut cursor = cursor.map_unchanged(|cursor| &mut cursor.0);
@@ -225,9 +225,9 @@ fn update_cursor_location_res(
         // Get the cameras that render into the current window.
         let mut cameras = camera_q
             .iter()
-            .filter(|&(_, _, camera)| match camera.target {
+            .filter(|&(_, _, _, target)| match target {
                 RenderTarget::Window(WindowRef::Primary) => is_primary,
-                RenderTarget::Window(WindowRef::Entity(target_ref)) => target_ref == win_ref,
+                RenderTarget::Window(WindowRef::Entity(target_ref)) => *target_ref == win_ref,
                 RenderTarget::Image(_)
                 | RenderTarget::TextureView(_)
                 | RenderTarget::None { .. } => false,
@@ -237,9 +237,9 @@ fn update_cursor_location_res(
 
         // Cameras with a higher order are rendered later, and thus on top of lower order cameras.
         // We want to handle them first.
-        cameras.sort_unstable_by_key(|(_, _, camera)| std::cmp::Reverse(camera.order));
+        cameras.sort_unstable_by_key(|(_, _, camera, _)| std::cmp::Reverse(camera.order));
 
-        for (camera_ref, cam_t, camera) in cameras {
+        for (camera_ref, cam_t, camera, _) in cameras {
             let _ = cam_t; // Note: disable the `unused_variables` warning in no-default-feature.
 
             // Does the camera viewport contain the cursor ?
